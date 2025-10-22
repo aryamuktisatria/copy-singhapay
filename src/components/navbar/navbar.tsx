@@ -10,12 +10,13 @@ export default function Navbar() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [animateNavbar, setAnimateNavbar] = useState(false);
 
-  // Efek animasi muncul saat pertama kali render
+  // animasi muncul navbar
   useEffect(() => {
     const timer = setTimeout(() => setAnimateNavbar(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
+  // auto tutup menu pas resize ke desktop
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
@@ -26,7 +27,7 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Ganti warna navbar dan tampilkan tombol scroll-top saat scroll
+  // efek scroll (ubah background navbar + tombol scroll top)
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 30);
@@ -36,7 +37,16 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Fungsi untuk scroll ke atas
+  // fungsi scroll ke section
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      setIsOpen(false); // tutup menu mobile setelah klik
+    }
+  };
+
+  // scroll ke atas
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -52,7 +62,10 @@ export default function Navbar() {
         `}
       >
         {/* Logo */}
-        <div className="flex items-center">
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={scrollToTop}
+        >
           <Image
             src="/logo-singhapay.png"
             alt="SinghaPay Logo"
@@ -65,15 +78,36 @@ export default function Navbar() {
 
         {/* Menu tengah - Desktop */}
         <div className="hidden lg:flex absolute left-1/2 transform -translate-x-1/2 items-center gap-[68px] text-white font-poppins font-medium text-[18px] leading-normal text-center">
-          <span className="hover:text-[#FFC808] cursor-pointer transition-colors duration-200">About Us</span>
-          <span className="hover:text-[#FFC808] cursor-pointer transition-colors duration-200">Our Features</span>
-          <span className="hover:text-[#FFC808] cursor-pointer transition-colors duration-200">Services</span>
-          <span className="hover:text-[#FFC808] cursor-pointer transition-colors duration-200">Solutions</span>
+          <span
+            onClick={() => scrollToSection("about")}
+            className="hover:text-[#FFC808] cursor-pointer transition-colors duration-200"
+          >
+            About Us
+          </span>
+          <span
+            onClick={() => scrollToSection("features")}
+            className="hover:text-[#FFC808] cursor-pointer transition-colors duration-200"
+          >
+            Our Features
+          </span>
+          <span
+            onClick={() => scrollToSection("services")}
+            className="hover:text-[#FFC808] cursor-pointer transition-colors duration-200"
+          >
+            Services
+          </span>
+          <span
+            onClick={() => scrollToSection("solutions")}
+            className="hover:text-[#FFC808] cursor-pointer transition-colors duration-200"
+          >
+            Solutions
+          </span>
         </div>
 
         {/* Button Contact Us - Desktop */}
         <div className="hidden lg:flex">
           <Button
+            onClick={() => scrollToSection("about")}
             className="w-[176px] h-[60px] px-7 py-3 rounded-[30px]
              bg-gradient-to-br from-[#EF5F22] to-[#F8931F] text-white font-poppins font-semibold text-[15px]
              transition-all duration-300 hover:brightness-110 shadow-lg"
@@ -104,12 +138,21 @@ export default function Navbar() {
           <div
             className="absolute top-full left-0 w-full bg-black flex flex-col items-center gap-6 py-6 text-white font-poppins font-medium text-[18px] lg:hidden z-40"
           >
-            <span className="hover:text-[#FFC808] cursor-pointer">About Us</span>
-            <span className="hover:text-[#FFC808] cursor-pointer">Our Features</span>
-            <span className="hover:text-[#FFC808] cursor-pointer">Services</span>
-            <span className="hover:text-[#FFC808] cursor-pointer">Solutions</span>
+            <span onClick={() => scrollToSection("about")} className="hover:text-[#FFC808] cursor-pointer">
+              About Us
+            </span>
+            <span onClick={() => scrollToSection("about")} className="hover:text-[#FFC808] cursor-pointer">
+              Our Features
+            </span>
+            <span onClick={() => scrollToSection("about")} className="hover:text-[#FFC808] cursor-pointer">
+              Services
+            </span>
+            <span onClick={() => scrollToSection("about")} className="hover:text-[#FFC808] cursor-pointer">
+              Solutions
+            </span>
 
             <Button
+              onClick={() => scrollToSection("about")}
               className="w-[160px] h-[50px] rounded-[30px]
               bg-gradient-to-br from-[#EF5F22] to-[#F8931F] text-white font-poppins font-semibold text-[15px]
               transition-all duration-300 hover:brightness-110 shadow-lg"
@@ -120,8 +163,8 @@ export default function Navbar() {
         )}
       </nav>
 
+      {/* Spacer biar konten gak ketutup navbar */}
       <div className="pt-[140px]"></div>
-
 
       {/* Tombol Scroll to Top */}
       <div

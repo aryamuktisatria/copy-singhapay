@@ -6,6 +6,9 @@ import Offer from "@/components/offer/offer";
 import WhyChoose from "@/components/why-choose/why-choose";
 import Commitment from "@/components/commitment/commitment";
 import Support from "@/components/support/support";
+import Testimonials from "@/components/testimoni/testimoni";
+import Footer from "@/components/footer/footer";
+import ContactForm from "@/components/contact/contact";
 
 export default function Home() {
   return (
@@ -18,6 +21,9 @@ export default function Home() {
       <WhyChoose />
       <Commitment />
       <Support />
+      <Testimonials />
+      <ContactForm />
+      <Footer />
     </div>
   );
 }

@@ -40,6 +40,7 @@ export default function WhyChoose() {
 
   return (
     <section
+      id='solutions'
       className="relative w-full mx-auto overflow-hidden"
       style={{
         maxWidth: '1440px',
@@ -99,7 +100,7 @@ export default function WhyChoose() {
         }
       `}</style>
 
-      {/* DESKTOP VERSION */}
+      {/* DESKTOP VERSION - TIDAK ADA PERUBAHAN */}
       <div className="hidden lg:block relative h-[660px]">
         {/* Background gradient box */}
         <div
@@ -275,10 +276,11 @@ export default function WhyChoose() {
         </div>
       </div>
 
-      {/* TABLET & MOBILE VERSION */}
+      {/* TABLET & MOBILE VERSION - PERUBAHAN DI SINI */}
       <div className="lg:hidden px-[20px] md:px-[40px] py-[60px] md:py-[80px]">
         <div className="relative mb-[40px] md:mb-[60px]">
           {/* Background gradient box - Mobile/Tablet */}
+          {/* Z-index 1 agar berada di bawah gambar why-choose */}
           <div
             className={isVisible ? 'animate-fade-in-up' : 'opacity-0'}
             style={{
@@ -288,12 +290,13 @@ export default function WhyChoose() {
               borderRadius: '11px',
               background: 'linear-gradient(180deg, rgba(242, 96, 36, 0.29) 0%, rgba(248, 147, 31, 0.29) 100%)',
               margin: '0 auto 20px',
-              position: 'relative',
-              zIndex: 1,
+              position: 'relative', // Penting untuk zIndex bekerja
+              zIndex: 1, // Pastikan di bawah why-choose.png
             }}
           />
 
           {/* Gelombang image - Mobile/Tablet */}
+          {/* Z-index 2 agar berada di bawah gambar why-choose tapi di atas gradient box */}
           <div
             className={isVisible ? 'animate-fade-in-left' : 'opacity-0'}
             style={{
@@ -304,7 +307,7 @@ export default function WhyChoose() {
               maxWidth: '400px',
               height: '200px',
               transform: 'rotate(-2.202deg)',
-              zIndex: 2,
+              zIndex: 2, // Di atas gradient box
               animationDelay: '0.2s',
             }}
           >
@@ -318,34 +321,51 @@ export default function WhyChoose() {
             />
           </div>
 
-          {/* Why choose main image - Mobile/Tablet */}
+          {/* Why choose main image - Mobile/Tablet - PERUBAHAN UTAMA DI SINI */}
+          {/* Diberi zIndex lebih tinggi (3) agar menimpa elemen lain. */}
+          {/* Diberi margin-top negatif untuk mengangkatnya ke atas secara visual. */}
           <div
-            className={isVisible ? 'animate-fade-in-up' : 'opacity-0'}
-            style={{
-              position: 'relative',
-              width: '100%',
-              maxWidth: '400px',
-              height: '280px',
-              margin: '0 auto',
-              borderRadius: '13px',
-              overflow: 'hidden',
-              zIndex: 3,
-              animationDelay: '0.4s',
-            }}
-          >
-            <Image
-              src="/why-choose.png"
-              alt="Why Choose"
-              fill
-              style={{
-                objectFit: 'cover',
-              }}
-            />
-          </div>
+  className={
+    isVisible ?
+    // **Kelas Responsif Baru untuk Margin:**
+    // MOBILE: Naik sedikit (-100px), di tengah (mx-auto)
+    // TABLET (md): Naik lebih tinggi (-150px), geser ke kanan (mr-[30px])
+    'animate-fade-in-up mt-[-220px] mx-right md:mt-[-260px] md:ml-auto md:mr-[50px]'
+    : 
+    'opacity-0'
+  }
+  style={{
+    position: 'relative', 
+    width: '100%',
+    maxWidth: '400px',
+    height: '280px',
+    // margin terkait vertikal & horizontal dihapus dari sini dan dipindahkan ke className
+    zIndex: 3, 
+    borderRadius: '13px',
+    overflow: 'hidden',
+    animationDelay: '0.4s',
+  }}
+>
+  <Image
+    src="/why-choose.png"
+    alt="Why Choose"
+    fill
+    style={{
+      objectFit: 'cover',
+    }}
+  />
+</div>
         </div>
 
         {/* Content section - Mobile/Tablet */}
-        <div className={isVisible ? 'animate-fade-in-up' : 'opacity-0'} style={{ animationDelay: '0.5s' }}>
+        {/* Margin-top disesuaikan agar teks tidak terlalu dekat dengan gambar yang terangkat */}
+        <div 
+          className={isVisible ? 'animate-fade-in-up' : 'opacity-0'} 
+          style={{ 
+            animationDelay: '0.5s',
+            marginTop: '80px', // Memberi jarak agar teks tidak terlalu menempel dengan gambar yang terangkat
+          }}
+        >
           <h2
             className="text-[28px] md:text-[32px] mb-[20px] md:mb-[25px]"
             style={{

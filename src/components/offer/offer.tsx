@@ -61,7 +61,8 @@ export default function Offer() {
 
   return (
     <section
-      className="relative w-full animate-fade-in"
+    id='services'  
+    className="relative w-full animate-fade-in"
       style={{
         minHeight: '621px',
         flexShrink: 0,
@@ -290,7 +291,7 @@ export default function Offer() {
 
             <div className="flex items-center justify-center gap-[15px] md:gap-[20px] mt-[35px] px-4">
               <CarouselPrevious
-                className="arrow-button relative left-0 top-0 transform-none transition-all"
+                className="arrow-button relative left-[15px] md:left-0 top-0 transform-none transition-all"
                 disabled={!canScrollPrev}
                 style={{
                   width: '40px',
@@ -343,8 +344,8 @@ export default function Offer() {
                 />
               </div>
 
-              <CarouselNext
-                className="arrow-button relative right-0 top-0 transform-none transition-all"
+             <CarouselNext
+                className="arrow-button relative right-[15px] md:right-0 top-0 transform-none transition-all"
                 disabled={!canScrollNext}
                 style={{
                   width: '40px',
