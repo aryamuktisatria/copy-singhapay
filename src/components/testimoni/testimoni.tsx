@@ -110,7 +110,7 @@ export default function Testimonials() {
   const desktopTranslateX = currentIndex * (desktopCardWidth + desktopGap);
 
   return (
-    <section className="relative w-full max-w-[1440px] mx-auto min-h-[812px] bg-gradient-to-br from-orange-50/30 to-white overflow-hidden px-4 py-12 md:py-16 lg:py-20">
+    <section className="relative w-full max-w-[1540px] mx-auto min-h-[812px] bg-gradient-to-br from-orange-50/30 to-white overflow-hidden py-12 md:py-16 lg:py-20">
       {/* Polkadot Background - Bottom Left */}
       <motion.div
         initial={{ opacity: 0, x: -50 }}
