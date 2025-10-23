@@ -291,31 +291,45 @@ export default function Offer() {
 
             <div className="flex items-center justify-center gap-[15px] md:gap-[20px] mt-[35px] px-4">
               <CarouselPrevious
-                className="arrow-button relative left-[15px] md:left-0 top-0 transform-none transition-all"
+                className=" relative left-[15px] md:left-0 top-0 transform-none transition-all"
                 disabled={!canScrollPrev}
                 style={{
-                  width: '40px',
-                  height: '40px',
-                  flexShrink: 0,
-                  border: '2px solid transparent',
-                  background: 'transparent',
-                  padding: 0,
+                    width: '40px',
+                    height: '40px',
+                    flexShrink: 0,
+                    // Hapus styling border/background lama, fokus pada konten di dalam
+                    background: 'transparent',
+                    padding: 0,
+                    border: 'none',
+                    // Tambahkan opacity saat disabled
+                    opacity: canScrollPrev ? 1 : 0.5,
+                    cursor: canScrollPrev ? 'pointer' : 'not-allowed',
                 }}
-              >
-                <div className="relative w-[36px] h-[36px]">
-                  <Image src="/bg-icon-hero.png" alt="Previous" fill style={{ objectFit: 'cover' }} />
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2.5}
-                    stroke="currentColor"
-                    className="absolute inset-0 m-auto w-5 h-5 text-orange-600"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                  </svg>
+            >
+                {/* Container untuk Background Image dan Icon */}
+                <div className="relative w-[40px] h-[40px] rounded-full">
+                    {/* Background Image (Bundar Putih) */}
+                    <Image 
+                        src="/bg-icon-hero.png" 
+                        alt="Previous Background" 
+                        fill 
+                        style={{ objectFit: 'cover' }} 
+                        className="rounded-full" // Tambahkan rounded-full untuk memastikan berbentuk bundar
+                    />
+                    {/* SVG Icon Previous (Hitam, strokeWidth 1.5) */}
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        // Atur ukuran menjadi size-6 (w-6 h-6) untuk memenuhi permintaan size-6
+                        className="absolute inset-0 m-auto w-6 h-6 text-black"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
                 </div>
-              </CarouselPrevious>
+            </CarouselPrevious>
 
               <div
                 style={{
@@ -348,28 +362,43 @@ export default function Offer() {
                 className="arrow-button relative right-[15px] md:right-0 top-0 transform-none transition-all"
                 disabled={!canScrollNext}
                 style={{
-                  width: '40px',
-                  height: '40px',
-                  flexShrink: 0,
-                  border: '2px solid transparent',
-                  background: 'transparent',
-                  padding: 0,
+                    width: '40px',
+                    height: '40px',
+                    flexShrink: 0,
+                    // Hapus styling border/background lama, fokus pada konten di dalam
+                    background: 'transparent',
+                    padding: 0,
+                    border: 'none',
+                    // Tambahkan opacity saat disabled
+                    opacity: canScrollNext ? 1 : 0.5,
+                    cursor: canScrollNext ? 'pointer' : 'not-allowed',
                 }}
-              >
-                <div className="relative w-[36px] h-[36px]">
-                  <Image src="/bg-icon-hero.png" alt="Next" fill style={{ objectFit: 'cover' }} />
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2.5}
-                    stroke="currentColor"
-                    className="absolute inset-0 m-auto w-5 h-5 text-orange-600"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                  </svg>
+            >
+                {/* Container untuk Background Image dan Icon */}
+                <div className="relative w-[40px] h-[40px] rounded-full">
+                    {/* Background Image (Bundar Putih) */}
+                    {/* Pastikan gambar /bg-icon-hero.png sudah bundar atau atur overflow-hidden jika perlu */}
+                    <Image 
+                        src="/bg-icon-hero.png" 
+                        alt="Next Background" 
+                        fill 
+                        style={{ objectFit: 'cover' }} 
+                        className="rounded-full" // Tambahkan rounded-full untuk memastikan berbentuk bundar
+                    />
+                    {/* SVG Icon Next (Hitam, strokeWidth 1.5) */}
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        // Atur ukuran menjadi size-6 (w-6 h-6) untuk memenuhi permintaan size-6
+                        className="absolute inset-0 m-auto w-6 h-6 text-black" 
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
                 </div>
-              </CarouselNext>
+            </CarouselNext>
             </div>
           </Carousel>
         </div>

@@ -6,20 +6,21 @@ import { motion } from "framer-motion";
 export default function Hero() {
   return (
     <section id="hero" className="relative bg-white w-full overflow-hidden">
-      
+
       {/* DESKTOP VERSION (lg:flex) */}
-      <div className="hidden lg:flex justify-center items-center relative" style={{ height: "660px" }}>
-        
-        {/* Hero Right dengan gambar fix yang sudah include icons */}
+      <div
+        className="hidden lg:flex justify-center items-center relative"
+        style={{ height: "660px" }}
+      >
+
+        {/* Hero Right - diperbaiki agar full kanan */}
         <motion.div
-          className="relative"
+          className="absolute right-0 top-0"
           style={{
-            width: "866px",
-            height: "650px",
+            width: "60vw", // biar tetap adaptif terhadap layar
+            height: "660px",
             flexShrink: 0,
             zIndex: 1,
-            marginRight: "-680px",
-            marginTop: "-10px",
           }}
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
@@ -30,20 +31,20 @@ export default function Hero() {
             alt="Hero Right with integrated icons"
             fill
             priority
-            className="object-cover"
+            className="object-cover object-right"
           />
         </motion.div>
 
-        {/* Hero Left (Container Gambar dan Teks) */}
+        {/* Hero Left (Gambar dan teks) */}
         <motion.div
           className="absolute left-0 top-0"
           style={{
-            width: "900px", 
-            height: "700px", 
+            width: "900px",
+            height: "700px",
             flexShrink: 0,
             zIndex: 5,
-            marginLeft: "20px", 
-            marginTop: "-30px", 
+            marginLeft: "20px",
+            marginTop: "-30px",
             overflow: "hidden",
           }}
           initial={{ opacity: 0, x: -100 }}
@@ -58,12 +59,12 @@ export default function Hero() {
             className="object-contain"
           />
 
-          {/* Frame teks/Badge */}
+          {/* Badge */}
           <motion.div
             style={{
               position: "absolute",
               left: "60px",
-              top: "120px", 
+              top: "120px",
               display: "inline-flex",
               height: "42px",
               padding: "34px 28px",
@@ -93,20 +94,18 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          {/* Judul utama */}
+          {/* Title utama - jadi 3 baris dan proporsional */}
           <motion.h1
             style={{
               position: "absolute",
               left: "60px",
-              top: "140px", 
-              marginTop: "80px", 
+              top: "220px",
               color: "#000",
               fontFamily: "Poppins",
-              fontSize: "50px",
-              fontStyle: "normal",
+              fontSize: "46px",
               fontWeight: 700,
               lineHeight: "1.3",
-              width: "600px",
+              width: "520px", // dikurangi agar teks terbungkus jadi 3 baris
             }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -120,16 +119,13 @@ export default function Hero() {
             style={{
               position: "absolute",
               left: "60px",
-              top: "350px", 
-              marginTop: "80px",
-              transform: "translateY(185px)", 
+              top: "420px",
               color: "#000",
               fontFamily: "Poppins",
               fontSize: "16px",
-              fontStyle: "normal",
               fontWeight: 400,
               lineHeight: "1.8",
-              width: "500px",
+              width: "480px",
             }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -140,9 +136,9 @@ export default function Hero() {
           </motion.p>
         </motion.div>
 
-        {/* Garis bawah DESKTOP */}
+        {/* Garis bawah */}
         <motion.div
-          className="absolute bottom-0 w-full h-[27px] bg-[#E3E6EF] lg:h-[40px]" 
+          className="absolute bottom-0 w-full h-[40px] bg-[#E3E6EF]"
           style={{ zIndex: 10 }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -150,12 +146,9 @@ export default function Hero() {
         ></motion.div>
       </div>
 
-      {/* MOBILE & TABLET VERSION */}
+      {/* MOBILE & TABLET VERSION (tidak diubah) */}
       <div className="lg:hidden relative flex flex-col bg-gradient-to-b from-white to-gray-50">
-
         <div className="relative w-full px-4 md:px-8 pt-10 md:pt-16 pb-4 md:pb-8">
-          
-          {/* Badge - Centered and pushed up */}
           <motion.div
             className="flex justify-center mb-5 md:mb-8"
             initial={{ opacity: 0, y: 20 }}
@@ -184,7 +177,6 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Title - Centered & Responsive */}
           <motion.h1
             className="text-center text-[28px] md:text-[42px] font-bold mb-3 md:mb-5 px-0 md:px-8 leading-tight"
             style={{
@@ -199,7 +191,6 @@ export default function Hero() {
             Fast, secure, and reliable transactions across borders
           </motion.h1>
 
-          {/* Description - Centered & Readable */}
           <motion.p
             className="text-center text-[13px] md:text-[16px] px-4 md:px-12 mb-8 md:mb-12 max-w-[600px] mx-auto"
             style={{
@@ -218,8 +209,7 @@ export default function Hero() {
           </motion.p>
         </div>
 
-        {/* Hero Right Section dengan gambar fix - Clean dan simple */}
-        <motion.div 
+        <motion.div
           className="relative w-full h-[320px] md:h-[420px] mb-0"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -235,11 +225,10 @@ export default function Hero() {
           />
         </motion.div>
 
-        {/* Bottom Line with gradient */}
-        <motion.div 
+        <motion.div
           className="w-full h-[32px] md:h-[38px]"
           style={{
-            background: "linear-gradient(180deg, #E3E6EF 0%, #D5D9E3 100%)"
+            background: "linear-gradient(180deg, #E3E6EF 0%, #D5D9E3 100%)",
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

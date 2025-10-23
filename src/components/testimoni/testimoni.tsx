@@ -66,8 +66,8 @@ export default function Testimonials() {
   };
 
   const handleDragEnd = (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const swipeThreshold = 30; // Dikurangi dari 50 jadi 30 - lebih sensitif
-    const swipeVelocityThreshold = 300; // Dikurangi dari 500 jadi 300 - lebih mudah
+    const swipeThreshold = 30;
+    const swipeVelocityThreshold = 300;
 
     if (Math.abs(info.offset.x) > swipeThreshold || Math.abs(info.velocity.x) > swipeVelocityThreshold) {
       if (info.offset.x > 0) {
@@ -103,6 +103,11 @@ export default function Testimonials() {
       scale: 0.95,
     }),
   };
+
+  // Calculate desktop carousel position for 2.5 cards view
+  const desktopCardWidth = 50; // 40% of container width
+  const desktopGap = -38; // 2% gap
+  const desktopTranslateX = currentIndex * (desktopCardWidth + desktopGap);
 
   return (
     <section className="relative w-full max-w-[1440px] mx-auto min-h-[812px] bg-gradient-to-br from-orange-50/30 to-white overflow-hidden px-4 py-12 md:py-16 lg:py-20">
@@ -226,13 +231,13 @@ export default function Testimonials() {
             </div>
           </div>
 
-          {/* Desktop: 3 Cards Layout */}
+          {/* Desktop: 2.5 Cards Layout */}
           <div className="hidden lg:block">
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden px-8">
               <motion.div
                 className="flex gap-8"
                 animate={{
-                  x: `calc(-${currentIndex * 33.333}% - ${currentIndex * 21.33}px)`,
+                  x: `-${desktopTranslateX}%`,
                 }}
                 transition={{
                   type: 'spring',
@@ -250,7 +255,7 @@ export default function Testimonials() {
                 {testimonials.map((testimonial) => (
                   <div
                     key={testimonial.id}
-                    className="w-[calc(33.333%-21.33px)] flex-shrink-0"
+                    className="w-[40%] flex-shrink-0" // 40% width for 2.5 cards view
                   >
                     <TestimonialCard testimonial={testimonial} />
                   </div>
@@ -274,11 +279,12 @@ export default function Testimonials() {
             whileTap={currentIndex > 0 ? { scale: 0.95 } : {}}
             onClick={handlePrev}
             disabled={currentIndex === 0}
-            className={`flex w-[40px] h-[40px] md:w-[48px] md:h-[48px] items-center justify-center rounded-full text-white shadow-lg transition-all duration-300 ${
-              currentIndex === 0
-                ? 'bg-gray-300 cursor-not-allowed opacity-50'
-                : 'bg-gradient-to-b from-[#FB5B24] to-[#F8931F] hover:shadow-xl'
-            }`}
+            className="flex w-[32px] h-[32px] p-[4px_3px] items-center justify-center gap-[10px] flex-shrink-0 rounded-[16px] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+            style={{
+              background: currentIndex === 0 
+                ? 'linear-gradient(180deg, #D1D5DB 0%, #9CA3AF 100%)'
+                : 'linear-gradient(180deg, #FB5B24 0%, #F8931F 100%)'
+            }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -286,7 +292,7 @@ export default function Testimonials() {
               viewBox="0 0 24 24"
               strokeWidth={2.5}
               stroke="currentColor"
-              className="w-5 h-5 md:w-6 md:h-6"
+              className="w-4 h-4 text-white"
             >
               <path
                 strokeLinecap="round"
@@ -319,11 +325,12 @@ export default function Testimonials() {
             whileTap={currentIndex < maxIndex ? { scale: 0.95 } : {}}
             onClick={handleNext}
             disabled={currentIndex === maxIndex}
-            className={`flex w-[40px] h-[40px] md:w-[48px] md:h-[48px] items-center justify-center rounded-full text-white shadow-lg transition-all duration-300 ${
-              currentIndex === maxIndex
-                ? 'bg-gray-300 cursor-not-allowed opacity-50'
-                : 'bg-gradient-to-b from-[#FB5B24] to-[#F8931F] hover:shadow-xl'
-            }`}
+            className="flex w-[32px] h-[32px] p-[4px_3px] items-center justify-center gap-[10px] flex-shrink-0 rounded-[16px] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+            style={{
+              background: currentIndex === maxIndex
+                ? 'linear-gradient(180deg, #D1D5DB 0%, #9CA3AF 100%)'
+                : 'linear-gradient(180deg, #FB5B24 0%, #F8931F 100%)'
+            }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -331,7 +338,7 @@ export default function Testimonials() {
               viewBox="0 0 24 24"
               strokeWidth={2.5}
               stroke="currentColor"
-              className="w-5 h-5 md:w-6 md:h-6"
+              className="w-4 h-4 text-white"
             >
               <path
                 strokeLinecap="round"

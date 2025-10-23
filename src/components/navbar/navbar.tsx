@@ -44,6 +44,8 @@ export default function Navbar() {
 
   // fungsi scroll ke section atau navigate ke halaman
   const scrollToSection = (id: string) => {
+    const offset = 120; // tinggi navbar untuk kompensasi scroll
+
     // Jika di halaman contact dan user klik menu lain, redirect ke home dulu
     if (isContactPage && id !== "contact") {
       router.push(`/#${id}`);
@@ -54,7 +56,14 @@ export default function Navbar() {
     // Jika sudah di home, scroll langsung
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+
       setIsOpen(false);
     }
   };
@@ -62,10 +71,8 @@ export default function Navbar() {
   // Handle contact button click
   const handleContactClick = () => {
     if (isContactPage) {
-      // Jika sudah di halaman contact, scroll ke atas
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      // Jika di halaman lain, navigate ke /contact
       router.push("/contact");
     }
     setIsOpen(false);

@@ -116,14 +116,13 @@ export default function Footer() {
                 >
                   {/* Telegram Icon */}
                   <div className="w-5 h-5 md:w-6 md:h-6 lg:w-[28px] lg:h-[28px] flex-shrink-0 mt-0.5">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="w-full h-full text-white"
-                    >
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.67-.52.36-.99.53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.37-.49 1.02-.75 3.99-1.73 6.65-2.87 7.98-3.43 3.8-1.58 4.59-1.85 5.1-1.86.11 0 .37.03.54.17.14.12.18.28.2.44.01.11.03.35.01.54z"/>
-                    </svg>
+                    <Image
+                      src="/telegram.png"
+                      alt="Telegram Icon"
+                      width={28}
+                      height={28}
+                      className="w-full h-full object-contain"
+                    />
                   </div>
 
                   {/* Telegram Text */}
@@ -173,17 +172,17 @@ export default function Footer() {
               <div className="w-full max-w-[500px] lg:w-[420px]">
                 {/* Maps iframe untuk semua device */}
                 <div className="w-full rounded-xl overflow-hidden shadow-2xl">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.975605605756!2d55.13647427539693!3d25.06881593688868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6cad1591bc2d%3A0xfc8c05a1d3fea1f!2sGoldcrest%20Executive%20-%20Al%20Thanyah%20Fifth%20-%20Dubai%20-%20Uni%20Emirat%20Arab!5e0!3m2!1sid!2sid!4v1761201841684!5m2!1sid!2sid"
-                    width="100%"
-                    height="300"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="w-full h-[300px] md:h-[340px] lg:h-[340px]"
-                    title="SinghaPay Office Location - Dubai"
-                  />
+                 <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.975605605756!2d55.13647427539693!3d25.06881593688868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6cad1591bc2d%3A0xfc8c05a1d3fea1f!2sGoldcrest%20Executive%20-%20Al%20Thanyah%20Fifth%20-%20Dubai%20-%20Uni%20Emirat%20Arab!5e0!3m2!1sen!2sid!4v1739999999999!5m2!1sen!2sid"
+                  width="100%"
+                  height="300"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-[300px] md:h-[340px] lg:h-[340px] rounded-xl shadow-2xl"
+                  title="SinghaPay Office Location - Dubai"
+                />
                 </div>
 
                 {/* Fallback Text untuk semua device */}
@@ -249,16 +248,16 @@ export default function Footer() {
               
               {/* Full Map in Modal */}
               <div className="w-full rounded-lg overflow-hidden">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.975605605756!2d55.13647427539693!3d25.06881593688868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6cad1591bc2d%3A0xfc8c05a1d3fea1f!2sGoldcrest%20Executive%20-%20Al%20Thanyah%20Fifth%20-%20Dubai%20-%20Uni%20Emirat%20Arab!5e0!3m2!1sid!2sid!4v1761201841684!5m2!1sid!2sid"
-                  width="100%"
-                  height="400"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="SinghaPay Office Location - Dubai"
-                />
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.975605605756!2d55.13647427539693!3d25.06881593688868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6cad1591bc2d%3A0xfc8c05a1d3fea1f!2sGoldcrest%20Executive%20-%20Al%20Thanyah%20Fifth%20-%20Dubai%20-%20Uni%20Emirat%20Arab!5e0!3m2!1sen!2sid!4v1739999999999!5m2!1sen!2sid"
+                width="100%"
+                height="400"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="SinghaPay Office Location - Dubai"
+              />
               </div>
 
               {/* Map Options */}
