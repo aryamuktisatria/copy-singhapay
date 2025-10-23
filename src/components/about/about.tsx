@@ -288,7 +288,7 @@ export default function About() {
           >
             Choose Us For Your {" "}
             <span style={orangeGradientStyle}>Payment Services And Experience</span>
-            {" "}The Different Firsthand!
+            {" "}The Difference Firsthand!
           </motion.h2>
 
           {/* Text Blocks with Separators */}

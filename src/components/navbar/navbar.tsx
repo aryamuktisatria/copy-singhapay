@@ -42,7 +42,7 @@ export default function Navbar() {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
-      setIsOpen(false); // tutup menu mobile setelah klik
+      setIsOpen(false); 
     }
   };
 
@@ -107,7 +107,7 @@ export default function Navbar() {
         {/* Button Contact Us - Desktop */}
         <div className="hidden lg:flex">
           <Button
-            onClick={() => scrollToSection("about")}
+            onClick={() => scrollToSection("contact")}
             className="w-[176px] h-[60px] px-7 py-3 rounded-[30px]
              bg-gradient-to-br from-[#EF5F22] to-[#F8931F] text-white font-poppins font-semibold text-[15px]
              transition-all duration-300 hover:brightness-110 shadow-lg"
@@ -141,18 +141,18 @@ export default function Navbar() {
             <span onClick={() => scrollToSection("about")} className="hover:text-[#FFC808] cursor-pointer">
               About Us
             </span>
-            <span onClick={() => scrollToSection("about")} className="hover:text-[#FFC808] cursor-pointer">
+            <span onClick={() => scrollToSection("features")} className="hover:text-[#FFC808] cursor-pointer">
               Our Features
             </span>
-            <span onClick={() => scrollToSection("about")} className="hover:text-[#FFC808] cursor-pointer">
+            <span onClick={() => scrollToSection("services")} className="hover:text-[#FFC808] cursor-pointer">
               Services
             </span>
-            <span onClick={() => scrollToSection("about")} className="hover:text-[#FFC808] cursor-pointer">
+            <span onClick={() => scrollToSection("solutions")} className="hover:text-[#FFC808] cursor-pointer">
               Solutions
             </span>
 
             <Button
-              onClick={() => scrollToSection("about")}
+              onClick={() => scrollToSection("contact")}
               className="w-[160px] h-[50px] rounded-[30px]
               bg-gradient-to-br from-[#EF5F22] to-[#F8931F] text-white font-poppins font-semibold text-[15px]
               transition-all duration-300 hover:brightness-110 shadow-lg"

@@ -5,17 +5,14 @@ import { motion, Variants, Transition } from 'framer-motion';
 
 export default function Mission() {
   // =========================================================
-  // 1. ANIMATION VARIANTS (Framer Motion)
+  // ANIMATION VARIANTS
   // =========================================================
 
-  // Konfigurasi transisi standar yang stabil
   const transitionConfig: Transition = {
     duration: 0.8,
-    // Menggunakan string standar 'easeOut' untuk stabilitas
     ease: 'easeOut',
   };
 
-  // Varian untuk efek slide-up dan fade-in pada teks/konten
   const slideUpVariants: Variants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -25,7 +22,6 @@ export default function Mission() {
     },
   };
 
-  // Varian untuk stagger container
   const staggerContainer: Variants = {
     hidden: {},
     visible: {
@@ -36,7 +32,6 @@ export default function Mission() {
     },
   };
 
-  // Varian untuk dekorasi (menggunakan transisi yang stabil)
   const decorVariants: Variants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: {
@@ -49,11 +44,11 @@ export default function Mission() {
     },
   };
 
-
   // =========================================================
-  // 2. STYLES (Untuk gradien teks)
+  // STYLES
   // =========================================================
 
+  // Gaya gradien untuk teks "Mission" dan "Vision"
   const orangeGradientStyle = {
     background: 'linear-gradient(90deg, #F85D1D 12.02%, #F6931C 70.19%)',
     backgroundClip: 'text',
@@ -62,13 +57,12 @@ export default function Mission() {
   };
 
   // =========================================================
-  // 3. KOMPONEN DEKORASI REUSABLE
+  // DECORATION COMPONENTS (Hanya desktop)
   // =========================================================
 
-  // Lingkaran di kanan atas
+  // Lingkaran dekorasi kanan atas
   const TopRightCircles = () => (
     <>
-      {/* Lingkaran luar */}
       <motion.div
         variants={decorVariants}
         className="absolute w-[437px] h-[437px] border-[5px] rounded-full border-orange-400/30"
@@ -79,7 +73,6 @@ export default function Mission() {
           zIndex: 1,
         }}
       />
-      {/* Lingkaran dalam */}
       <motion.div
         variants={decorVariants}
         className="absolute w-[344px] h-[344px] border-[5px] rounded-full border-orange-400/30"
@@ -93,10 +86,9 @@ export default function Mission() {
     </>
   );
 
-  // Lingkaran di kiri bawah
+  // Lingkaran dekorasi kiri bawah
   const BottomLeftCircles = () => (
     <>
-      {/* Lingkaran luar */}
       <motion.div
         variants={decorVariants}
         className="absolute w-[437px] h-[437px] border-[5px] rounded-full border-orange-400/30"
@@ -107,7 +99,6 @@ export default function Mission() {
           zIndex: 1,
         }}
       />
-      {/* Lingkaran dalam */}
       <motion.div
         variants={decorVariants}
         className="absolute w-[344px] h-[344px] border-[5px] rounded-full border-orange-400/30"
@@ -122,12 +113,12 @@ export default function Mission() {
   );
 
   // =========================================================
-  // 4. MAIN COMPONENT RENDER
+  // MAIN COMPONENT RENDER
   // =========================================================
 
   return (
     <motion.section
-      id="features" // Section ID
+      id="features"
       className="relative flex flex-col bg-white mx-auto overflow-hidden"
       style={{
         width: '100%',
@@ -141,152 +132,155 @@ export default function Mission() {
       viewport={{ once: true, amount: 0.1 }}
       variants={staggerContainer}
     >
-      {/* ==================== BAGIAN ATAS (MISSION) ==================== */}
-      <div className="relative w-full px-4 md:px-10 lg:px-44 pt-16 pb-10 flex flex-col lg:flex-row lg:justify-between lg:items-start">
-
-        {/* Dekorasi hanya tampil di desktop/large screens ke atas */}
+      {/* ==================== MISSION SECTION (Teks Kiri, Gambar Kanan) ==================== */}
+      <div className="relative w-full px-6 md:px-10 lg:px-44 pt-16 pb-10 flex flex-col lg:flex-row lg:justify-between lg:items-start">
+        
+        {/* Dekorasi lingkaran besar (Hanya desktop) */}
         <div className="hidden lg:block">
           <TopRightCircles />
         </div>
 
-        {/* Polkadot kanan atas (Posisi disesuaikan per breakpoint) */}
+        {/* Dekorasi Polkadot kanan atas (Responsif) */}
         <motion.div
           variants={decorVariants}
-          className="absolute w-[100px] h-[103px] lg:w-[143px] lg:h-[146px] z-20"
-          style={{
-            top: '50px', 
-            right: '20px',
-          }}
+          className="absolute z-0 
+                     w-[80px] h-[82px] top-[210px] right-[5px]
+                     md:top-41 md:right-40
+                     lg:top-8 lg:right-34" 
         >
           <Image
             src="/polkadot-mission.png"
-            alt="Polkadot Mission"
+            alt="Polkadot decoration"
             fill
             style={{ objectFit: 'contain' }}
-            sizes="(max-width: 1024px) 100px, 143px"
+            sizes="(max-width: 768px) 80px, (max-width: 1024px) 110px, 143px"
           />
         </motion.div>
 
-        {/* Teks Kiri (Mission) - Teks selalu URUTAN PERTAMA (order-1) di Mobile/Tablet dan Desktop */}
-        <motion.div
-          variants={slideUpVariants}
-          // Di Mobile/Tablet, ini adalah order-1 (muncul duluan/di atas). Di Desktop, tetap di order-1 (posisi kiri).
-          className="w-full lg:max-w-md mt-6 lg:mt-16 **order-1**"
-        >
-          <h2 className="font-['Poppins'] text-3xl md:text-4xl font-bold text-[#444] mb-2">
-            Our <span style={orangeGradientStyle}>Mission</span>
-          </h2>
-          <p
-            className="text-base md:text-lg text-justify font-['Poppins'] font-normal text-gray-800"
-            style={{
-              lineHeight: '1.8',
-              letterSpacing: '0.5px',
-            }}
-          >
-            To make digital payments accessible, secure, and efficient, enabling businesses and
-            individuals to thrive in India&apos;s rapidly growing digital economy.
-          </p>
-        </motion.div>
-
-        {/* Gambar Kanan (Mission Right) - Gambar selalu URUTAN KEDUA (order-2) di Mobile/Tablet dan Desktop */}
-        <motion.div
-          variants={slideUpVariants}
-          // Di Mobile/Tablet, ini adalah order-2 (muncul setelah teks/di bawah teks). Di Desktop, ini adalah order-2 (posisi kanan).
-          className="relative w-full h-[200px] md:h-[250px] lg:w-[406px] lg:h-[200px] mt-10 lg:mt-16 **order-2** flex justify-center lg:justify-end"
-        >
-          {/* Gambar utama */}
-          <div className="relative w-full md:w-3/4 lg:w-[406px] h-full rounded-lg overflow-hidden">
-            <Image
-              src="/mission-right.jpg"
-              alt="Mission Right"
-              fill
-              style={{ objectFit: 'cover' }}
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 75vw, 406px"
-            />
-          </div>
-
-          {/* Overlay hijau + logo (Posisi Absolut di atas gambar utama) */}
+        {/* Konten Utama Mission */}
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start w-full gap-8 lg:gap-12">
+          
+          {/* Text - Mission (Order 1: Kiri di desktop, Atas di mobile) */}
           <motion.div
-            variants={decorVariants}
-            className="absolute flex items-center justify-center bg-[url('/bg-icon-hero.png')] bg-cover bg-center 
-                       w-[60px] h-[58px] md:w-[68px] md:h-[66px] z-10"
-            style={{
-              bottom: '5%',
-              left: '5%',
-            }}
+            variants={slideUpVariants}
+            className="w-full lg:max-w-md order-1 lg:-ml-18 z-10" 
           >
-            <Image
-              src="/logo-hero-1.jpg"
-              alt="Logo Hero"
-              width={60}
-              height={28}
-              sizes="60px"
-              style={{ objectFit: 'contain' }}
-            />
+            <h2 className="font-['Poppins'] text-2xl md:text-3xl lg:text-4xl font-bold text-[#444] mb-3 md:mb-4">
+              Our <span style={orangeGradientStyle}>Mission</span>
+            </h2>
+            <p
+              className="text-sm md:text-base lg:text-lg text-justify font-['Poppins'] font-normal text-gray-800"
+              style={{
+                lineHeight: '1.8',
+                letterSpacing: '0.5px',
+              }}
+            >
+              To make digital payments accessible, secure, and efficient, enabling businesses and
+              individuals to thrive in India&apos;s rapidly growing digital economy.
+            </p>
           </motion.div>
-        </motion.div>
+
+          {/* Image - Mission (Order 2: Kanan di desktop, Bawah di mobile) */}
+          <motion.div
+            variants={slideUpVariants}
+            className="relative w-full lg:w-[406px] order-2 flex justify-center lg:justify-end"
+          >
+            <div className="relative w-full max-w-[320px] h-[180px] md:max-w-[380px] md:h-[220px] lg:w-[406px] lg:h-[250px] rounded-lg overflow-hidden">
+              <Image
+                src="/mission-right.jpg"
+                alt="Mission illustration"
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 320px, (max-width: 1024px) 380px, 406px"
+              />
+            </div>
+
+            <div
+              className="absolute flex items-center justify-center 
+                         bg-[url('/bg-icon-hero.png')] bg-cover bg-center 
+                         w-[58px] h-[52px] md:w-[65px] md:h-[63px] lg:w-[68px] lg:h-[66px] 
+                         z-10 
+                         top-[30%] right-[53%] md:top-[31%] md:right-[52%] lg:top-[30%] lg:right-[50%]"
+            >
+              <Image
+                src="/logo-hero-1.jpg"
+                alt="Logo"
+                width={50} 
+                height={28}
+                sizes="(max-width: 768px) 40px, (max-width: 1024px) 50px, 60px"
+                style={{ objectFit: 'contain' }}
+              />
+            </div>
+          </motion.div>
+        </div>
       </div>
 
-      {/* ==================== BAGIAN BAWAH (VISION) - MIRRORED ==================== */}
-      <div className="relative w-full px-4 md:px-10 lg:px-44 pt-10 pb-20 flex flex-col lg:flex-row lg:justify-between lg:items-end mt-10 lg:mt-0">
-
-        {/* Dekorasi hanya tampil di desktop/large screens ke atas */}
+      {/* ==================== VISION SECTION (Gambar Kiri, Teks Kanan) ==================== */}
+      <div className="relative w-full px-6 md:px-10 lg:px-44 pt-10 pb-20 flex flex-col lg:flex-row lg:justify-between lg:items-start mt-10 lg:mt-16">
+        
+        {/* Dekorasi lingkaran besar (Hanya desktop) */}
         <div className="hidden lg:block">
           <BottomLeftCircles />
         </div>
 
-        {/* Polkadot bawah kiri (Posisi disesuaikan per breakpoint) */}
+        {/* Dekorasi Polkadot kiri bawah (Responsif, z-0 agar di belakang) */}
         <motion.div
           variants={decorVariants}
-          className="absolute w-[100px] h-[103px] lg:w-[143px] lg:h-[146px] z-20"
+          className="absolute z-0 
+                     w-[80px] h-[82px] bottom-[45px] left-[2px]
+                     md:w-[110px] md:h-[113px] md:bottom-[30px] md:left-[140px]
+                     lg:w-[143px] lg:h-[146px] lg:bottom-[20px] lg:left-[100px]"
           style={{
-            bottom: '20px',
-            left: '20px',
+            pointerEvents: 'none', 
           }}
         >
           <Image
             src="/polkadot-mission.png"
-            alt="Polkadot Mission Bottom"
+            alt="Polkadot decoration"
             fill
-            style={{ objectFit: 'contain' }}
-            sizes="(max-width: 1024px) 100px, 143px"
+            className="object-contain"
+            sizes="(max-width: 768px) 80px, (max-width: 1024px) 110px, 143px"
           />
         </motion.div>
 
-        {/* Gambar Kiri (Mission Left) - Di Mobile/Tablet, Gambar ini URUTAN KEDUA */}
-        <motion.div
-          variants={slideUpVariants}
-          className="relative w-full h-[200px] md:h-[250px] lg:w-[406px] lg:h-[200px] mt-10 lg:mt-0 **order-2** lg:order-1 flex justify-center lg:justify-start"
-        >
-          <div className="relative w-full md:w-3/4 lg:w-[406px] h-full rounded-lg overflow-hidden">
-            <Image
-              src="/mission-left.jpg"
-              alt="Mission Left"
-              fill
-              style={{ borderRadius: '8px', objectFit: 'cover' }}
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 75vw, 406px"
-            />
-          </div>
-        </motion.div>
-
-        {/* Teks Kanan (Vision) - Di Mobile/Tablet, Teks ini URUTAN PERTAMA */}
-        <motion.div
-          variants={slideUpVariants}
-          className="w-full lg:max-w-md mt-6 lg:mt-0 **order-1** lg:order-2"
-        >
-          <h2 className="font-['Poppins'] text-3xl md:text-4xl font-bold text-[#444] mb-2">
-            Our <span style={orangeGradientStyle}>Vision</span>
-          </h2>
-          <p
-            className="text-base md:text-lg text-justify font-['Poppins'] font-normal text-gray-800"
-            style={{
-              lineHeight: '1.8',
-              letterSpacing: '0.8px',
-            }}
+        {/* Konten Utama Vision */}
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start w-full gap-8 lg:gap-12">
+          
+          {/* Image - Vision (Order 2/1: Kiri di desktop, Bawah di mobile) */}
+          <motion.div
+            variants={slideUpVariants}
+            className="relative w-full lg:w-[406px] order-2 lg:order-1 flex justify-center lg:justify-start"
           >
-            To become India’s most trusted and innovative payment gateway, bridging businesses and consumers with world-class financial technology.
-          </p>
-        </motion.div>
+            <div className="relative w-full max-w-[320px] h-[180px] md:max-w-[380px] md:h-[220px] lg:w-[406px] lg:h-[250px] rounded-lg overflow-hidden">
+              <Image
+                src="/mission-left.jpg"
+                alt="Vision illustration"
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 320px, (max-width: 1024px) 380px, 406px"
+              />
+            </div>
+          </motion.div>
+
+          {/* Text - Vision (Kanan di desktop, Atas di mobile) */}
+          <motion.div
+            variants={slideUpVariants}
+            className="w-full lg:max-w-md order-1 lg:order-2 z-10"
+          >
+            <h2 className="font-['Poppins'] text-2xl md:text-3xl lg:text-4xl font-bold text-[#444] mb-3 md:mb-4">
+              Our <span style={orangeGradientStyle}>Vision</span>
+            </h2>
+            <p
+              className="text-sm md:text-base lg:text-lg text-justify font-['Poppins'] font-normal text-gray-800"
+              style={{
+                lineHeight: '1.8',
+                letterSpacing: '0.8px',
+              }}
+            >
+              To become India&apos;s most trusted and innovative payment gateway, bridging businesses and consumers with world-class financial technology.
+            </p>
+          </motion.div>
+        </div>
       </div>
     </motion.section>
   );

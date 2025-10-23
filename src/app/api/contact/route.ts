@@ -38,7 +38,7 @@ const validateMessage = (message: string): string | null => {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, companyName, phone, message } = body;
+    const { name, email, companyName, phone, message, recaptchaToken } = body; // Menerima recaptchaToken
 
     // Server-side validation
     const validationErrors = {
@@ -60,8 +60,44 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+    
+    // ----------------------------------------------------------------------
+    // 1. VERIFIKASI reCAPTCHA v3
+    // ----------------------------------------------------------------------
+    if (!recaptchaToken) {
+        return NextResponse.json(
+            { error: 'reCAPTCHA token is missing' },
+            { status: 400 }
+        );
+    }
 
-    // Check if environment variables are set
+    const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY;
+    if (!RECAPTCHA_SECRET_KEY) {
+        console.error('Missing RECAPTCHA_SECRET_KEY environment variable');
+        return NextResponse.json(
+            { error: 'reCAPTCHA service is not configured properly' },
+            { status: 500 }
+        );
+    }
+    
+    const recaptchaResponse = await fetch(
+        `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
+        { method: 'POST' }
+    );
+    
+    const recaptchaData = await recaptchaResponse.json();
+
+    if (!recaptchaData.success || recaptchaData.score < 0.5) { // Threshold 0.5
+        console.warn('reCAPTCHA failed:', recaptchaData);
+        return NextResponse.json(
+            { error: 'reCAPTCHA verification failed. Score: ' + recaptchaData.score },
+            { status: 403 } // Forbidden
+        );
+    }
+
+    // ----------------------------------------------------------------------
+    // 2. KONFIGURASI DAN KIRIM EMAIL
+    // ----------------------------------------------------------------------
     if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASSWORD || !process.env.SMTP_TO) {
       console.error('Missing email configuration environment variables');
       return NextResponse.json(
@@ -70,7 +106,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create transporter
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || '587'),
@@ -81,7 +116,6 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Verify transporter configuration
     try {
       await transporter.verify();
     } catch (error) {
@@ -92,7 +126,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Email content dengan layout yang lebih rapi
     const mailOptions = {
       from: `"SinghaPay Contact Form" <${process.env.SMTP_USER}>`,
       to: process.env.SMTP_TO,
@@ -213,6 +246,11 @@ export async function POST(request: NextRequest) {
                             ${message.replace(/\n/g, '<br>')}
                         </div>
                     </div>
+                    
+                    <div class="section">
+                        <div class="section-title">reCAPTCHA Score</div>
+                        <p>Score: <strong>${recaptchaData.score}</strong> (Action: ${recaptchaData.action})</p>
+                    </div>
                 </div>
                 
                 <div class="footer">
@@ -259,7 +297,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Add OPTIONS method for CORS
 export async function OPTIONS() {
   return new NextResponse(null, {
     status: 200,

@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useRef } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 interface FormData {
   name: string;
@@ -27,7 +27,7 @@ interface CardItem {
 }
 
 export default function ContactForm() {
-  const router = useRouter();
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showThankYou, setShowThankYou] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
@@ -44,6 +44,9 @@ export default function ContactForm() {
     phone: '',
     message: ''
   });
+
+  // reCAPTCHA site key (pastikan ini adalah key reCAPTCHA v3)
+  const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; // default test key v2
 
   // Validasi functions
   const validateName = (name: string): string => {
@@ -78,6 +81,9 @@ export default function ContactForm() {
     if (message.length > 300) return 'Message should not exceed 300 characters';
     return '';
   };
+
+  // Hapus handleRecaptchaChange karena reCAPTCHA v3 menggunakan execute()
+  // const handleRecaptchaChange = (token: string | null) => { setRecaptchaToken(token || ''); };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -116,7 +122,26 @@ export default function ContactForm() {
       return;
     }
 
+    if (!recaptchaRef.current) {
+        alert('reCAPTCHA component is not initialized.');
+        return;
+    }
+    
     setIsLoading(true);
+
+    let recaptchaToken = '';
+    
+    try {
+        // Panggil reCAPTCHA execute() untuk mendapatkan token V3
+        // 'contact_form' adalah action name yang harus Anda daftarkan di konsol reCAPTCHA
+        recaptchaToken = await recaptchaRef.current.executeAsync() as string;
+        recaptchaRef.current.reset(); // Reset setelah mendapatkan token
+    } catch (error) {
+        console.error('reCAPTCHA execution error:', error);
+        alert('Failed to get reCAPTCHA token. Please try again.');
+        setIsLoading(false);
+        return;
+    }
 
     try {
       const response = await fetch('/api/contact', {
@@ -124,7 +149,10 @@ export default function ContactForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          recaptchaToken // Kirim token ke server
+        }),
       });
 
       const data = await response.json();
@@ -148,6 +176,7 @@ export default function ContactForm() {
           phone: '',
           message: ''
         });
+        
       } else {
         alert(data.error || 'Failed to send message. Please try again.');
         setIsLoading(false);
@@ -163,10 +192,7 @@ export default function ContactForm() {
     setShowThankYou(false);
   };
 
-  const handleBackToHomepage = (): void => {
-    router.push('/');
-  };
-
+ 
   const cards: CardItem[] = [
     {
       icon: '/conversation.png',
@@ -186,7 +212,7 @@ export default function ContactForm() {
   ];
 
   return (
-    <div className="relative w-full min-h-screen bg-white overflow-hidden">
+    <div id="contact" className="relative w-full min-h-screen bg-white overflow-hidden">
       {/* Thank You Card Overlay */}
       {showThankYou && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
@@ -234,18 +260,6 @@ export default function ContactForm() {
                   </span>
                 </button>
 
-                <button
-                  onClick={handleBackToHomepage}
-                  className="w-full py-3 px-6 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95"
-                  style={{
-                    background: 'linear-gradient(185deg, #EF5F22 -3.48%, #F8931F 127.57%)',
-                    fontFamily: 'Poppins, sans-serif',
-                  }}
-                >
-                  <span className="text-white text-sm font-semibold">
-                    Back To Homepage
-                  </span>
-                </button>
               </div>
             </div>
           </div>
@@ -470,10 +484,21 @@ export default function ContactForm() {
                   )}
                 </div>
 
+                {/* reCAPTCHA - disembunyikan karena reCAPTCHA v3 tidak membutuhkan interaksi visual. */}
+                {/* Namun, elemen badge reCAPTCHA akan muncul di sudut kanan bawah layar */}
+                <div className="flex justify-center" style={{ display: 'none' }}> 
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    size="invisible" // Penting untuk reCAPTCHA v3
+                    sitekey={RECAPTCHA_SITE_KEY}
+                    // action="contact_form" // Action akan dipanggil di executeAsync
+                  />
+                </div>
+
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading} // Hanya disable saat loading
                   className="rounded-lg py-3 px-10 lg:px-14 text-sm lg:text-base font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{
                     fontFamily: 'Poppins, sans-serif',
@@ -544,6 +569,24 @@ export default function ContactForm() {
           }
         }
 
+        @keyframes bounceIn {
+          0% {
+            opacity: 0;
+            transform: scale(0.3) translateY(20px);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.05);
+          }
+          70% {
+            transform: scale(0.95);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
         .animate-fadeIn {
           animation: fadeIn 0.6s ease-out forwards;
         }
@@ -564,9 +607,30 @@ export default function ContactForm() {
           animation: scaleIn 0.3s ease-out forwards;
         }
 
+        .animate-bounceIn {
+          animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+          opacity: 0;
+        }
+
+        /* reCAPTCHA responsive styling */
+        .recaptcha-container {
+          transform: scale(0.9);
+          transform-origin: center;
+        }
+
         @media (max-width: 768px) {
           .animate-slideIn {
             animation: fadeIn 0.6s ease-out forwards;
+          }
+          
+          .recaptcha-container {
+            transform: scale(0.85);
+          }
+        }
+
+        @media (max-width: 480px) {
+          .recaptcha-container {
+            transform: scale(0.75);
           }
         }
       `}</style>

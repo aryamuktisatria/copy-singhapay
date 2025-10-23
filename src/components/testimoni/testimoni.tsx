@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 interface Testimonial {
@@ -43,8 +43,6 @@ export default function Testimonials() {
     },
   ];
 
-  // Maximum scroll index based on showing 2.5 cards
-  // We can scroll until the last card is fully visible on the right
   const maxIndex = testimonials.length - 1;
 
   const handlePrev = () => {
