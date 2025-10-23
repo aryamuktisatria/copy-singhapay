@@ -307,7 +307,7 @@ export default function Support() {
                     className="max-w-[1100px] text-base md:text-[18px] font-poppins font-normal text-black text-center leading-relaxed 
                     mb-10 md:mb-14 lg:mb-16 px-4"
                 >
-                    SinghaPay is preparing to launch Multi-Currency Support, enabling merchants and users to transact in a variety of global currencies beyond INR.
+                  Expanding Our Reach — Launching Soon:
                 </motion.p>
 
                 {/* Currency Cards Grid */}
@@ -337,7 +337,7 @@ export default function Support() {
                                 />
                             </div>
                             <h3 className="flex-1 text-black font-poppins text-[20px] md:text-[21px] font-semibold leading-normal">
-                                Bangladesh Taka
+                                Bangladeshi Taka
                             </h3>
                         </div>
                         <p className="w-full text-[#67687A] font-poppins text-[16px] md:text-[17px] font-normal leading-normal">

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Testimonial {
   id: number;
@@ -15,6 +15,10 @@ interface Testimonial {
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [currentTranslate, setCurrentTranslate] = useState(0);
+  const [prevTranslate, setPrevTranslate] = useState(0);
 
   const testimonials: Testimonial[] = [
     {
@@ -36,7 +40,7 @@ export default function Testimonials() {
     {
       id: 3,
       stars: 5,
-      text: '"Singhapay’s API documentation is clean and developer-friendly. We integrated in under a day."',
+      text: '"Singhapay\'s API documentation is clean and developer-friendly. We integrated in under a day."',
       name: 'Rohit Malhotra',
       position: 'Lead Engineer, FinEdge Solutions',
       image: '/rohit-malhotra.jpg',
@@ -60,6 +64,57 @@ export default function Testimonials() {
   const handleDotClick = (index: number) => {
     setCurrentIndex(index);
   };
+
+  // Touch and Mouse Events for Swipe
+  const handleTouchStart = (e: React.TouchEvent | React.MouseEvent) => {
+    setIsDragging(true);
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    setStartX(clientX);
+    setPrevTranslate(currentTranslate);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent | React.MouseEvent) => {
+    if (!isDragging) return;
+    
+    const currentX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const diff = currentX - startX;
+    setCurrentTranslate(prevTranslate + diff);
+  };
+
+  const handleTouchEnd = () => {
+    if (!isDragging) return;
+    
+    setIsDragging(false);
+    const movedBy = currentTranslate - prevTranslate;
+
+    // If moved enough to trigger slide change
+    if (Math.abs(movedBy) > 50) {
+      if (movedBy > 0 && currentIndex > 0) {
+        // Swipe right - go to previous
+        setCurrentIndex(currentIndex - 1);
+      } else if (movedBy < 0 && currentIndex < maxIndex) {
+        // Swipe left - go to next
+        setCurrentIndex(currentIndex + 1);
+      }
+    }
+    
+    // Reset translate
+    setCurrentTranslate(0);
+    setPrevTranslate(0);
+  };
+
+  // Auto-play (optional)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (currentIndex < maxIndex) {
+        setCurrentIndex(prev => prev + 1);
+      } else {
+        setCurrentIndex(0);
+      }
+    }, 5000); // Change slide every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [currentIndex, maxIndex]);
 
   return (
     <section className="relative w-full max-w-[1440px] mx-auto min-h-[812px] bg-gradient-to-br from-orange-50/30 to-white overflow-hidden px-4 py-12 md:py-16 lg:py-20">
@@ -125,7 +180,7 @@ export default function Testimonials() {
             className="w-full max-w-[569px] text-black font-poppins text-[28px] md:text-[32px] lg:text-[36px] font-semibold leading-tight mb-4 md:mb-5"
           >
             Here&apos;s What Our Customer Have Said
-            </motion.h2>
+          </motion.h2>
 
           {/* Subtitle */}
           <motion.p
@@ -139,20 +194,28 @@ export default function Testimonials() {
           </motion.p>
         </motion.div>
 
-        {/* Testimonials Carousel - 2.5 Cards View */}
+        {/* Testimonials Carousel - 1 Card on Mobile/Tablet, 3 on Desktop */}
         <div className="relative mb-8 md:mb-12 overflow-hidden">
           <div className="overflow-hidden">
             <motion.div
-              className="flex gap-4 md:gap-[16px]"
+              className="flex gap-4 md:gap-6 lg:gap-8"
               animate={{
-                x: currentIndex === 0 
-                  ? 0 
-                  : `calc(-${currentIndex * (100 / 2.5)}% - ${currentIndex * 16}px)`,
+                x: isDragging 
+                  ? currentTranslate 
+                  : `calc(-${currentIndex * 100}% - ${currentIndex * 16}px)`,
               }}
               transition={{
-                duration: 0.6,
+                duration: isDragging ? 0 : 0.6,
                 ease: [0.25, 0.1, 0.25, 1],
               }}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              onMouseDown={handleTouchStart}
+              onMouseMove={handleTouchMove}
+              onMouseUp={handleTouchEnd}
+              onMouseLeave={handleTouchEnd}
+              style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
             >
               {testimonials.map((testimonial, idx) => (
                 <motion.div
@@ -161,7 +224,7 @@ export default function Testimonials() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
                   viewport={{ once: true }}
-                  className="w-[85vw] sm:w-[70vw] md:w-[45vw] lg:w-[487px] min-w-[280px] h-auto md:h-[278px] rounded-[10px] bg-white shadow-[1px_0_9.3px_4px_rgba(0,0,0,0.10)] p-5 md:p-6 flex flex-col flex-shrink-0"
+                  className="w-full lg:w-[calc(33.333%-16px)] min-w-full lg:min-w-[calc(33.333%-16px)] h-auto md:h-[278px] rounded-[10px] bg-white shadow-[1px_0_9.3px_4px_rgba(0,0,0,0.10)] p-5 md:p-6 flex flex-col flex-shrink-0"
                 >
                   {/* Stars */}
                   <div className="flex gap-[7px] mb-4 md:mb-5">
@@ -218,6 +281,19 @@ export default function Testimonials() {
                 </motion.div>
               ))}
             </motion.div>
+          </div>
+
+          {/* Swipe Instruction for Mobile */}
+          <div className="lg:hidden text-center mt-4">
+            <p className="text-gray-500 font-poppins text-sm flex items-center justify-center gap-2">
+              <span>Swipe to navigate</span>
+              <motion.span
+                animate={{ x: [0, 10, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                →
+              </motion.span>
+            </p>
           </div>
         </div>
 
