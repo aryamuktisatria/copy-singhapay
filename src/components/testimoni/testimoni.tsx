@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+import { useState } from 'react';
 
 interface Testimonial {
   id: number;
@@ -15,10 +15,7 @@ interface Testimonial {
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [currentTranslate, setCurrentTranslate] = useState(0);
-  const [prevTranslate, setPrevTranslate] = useState(0);
+  const [direction, setDirection] = useState(0);
 
   const testimonials: Testimonial[] = [
     {
@@ -51,70 +48,61 @@ export default function Testimonials() {
 
   const handlePrev = () => {
     if (currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
+      setDirection(-1);
+      setCurrentIndex(prev => prev - 1);
     }
   };
 
   const handleNext = () => {
     if (currentIndex < maxIndex) {
-      setCurrentIndex((prev) => prev + 1);
+      setDirection(1);
+      setCurrentIndex(prev => prev + 1);
     }
   };
 
   const handleDotClick = (index: number) => {
+    setDirection(index > currentIndex ? 1 : -1);
     setCurrentIndex(index);
   };
 
-  // Touch and Mouse Events for Swipe
-  const handleTouchStart = (e: React.TouchEvent | React.MouseEvent) => {
-    setIsDragging(true);
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    setStartX(clientX);
-    setPrevTranslate(currentTranslate);
-  };
+  const handleDragEnd = (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const swipeThreshold = 30; // Dikurangi dari 50 jadi 30 - lebih sensitif
+    const swipeVelocityThreshold = 300; // Dikurangi dari 500 jadi 300 - lebih mudah
 
-  const handleTouchMove = (e: React.TouchEvent | React.MouseEvent) => {
-    if (!isDragging) return;
-    
-    const currentX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const diff = currentX - startX;
-    setCurrentTranslate(prevTranslate + diff);
-  };
-
-  const handleTouchEnd = () => {
-    if (!isDragging) return;
-    
-    setIsDragging(false);
-    const movedBy = currentTranslate - prevTranslate;
-
-    // If moved enough to trigger slide change
-    if (Math.abs(movedBy) > 50) {
-      if (movedBy > 0 && currentIndex > 0) {
-        // Swipe right - go to previous
-        setCurrentIndex(currentIndex - 1);
-      } else if (movedBy < 0 && currentIndex < maxIndex) {
-        // Swipe left - go to next
-        setCurrentIndex(currentIndex + 1);
+    if (Math.abs(info.offset.x) > swipeThreshold || Math.abs(info.velocity.x) > swipeVelocityThreshold) {
+      if (info.offset.x > 0) {
+        // Swipe right - previous
+        if (currentIndex > 0) {
+          setDirection(-1);
+          setCurrentIndex(prev => prev - 1);
+        }
+      } else {
+        // Swipe left - next
+        if (currentIndex < maxIndex) {
+          setDirection(1);
+          setCurrentIndex(prev => prev + 1);
+        }
       }
     }
-    
-    // Reset translate
-    setCurrentTranslate(0);
-    setPrevTranslate(0);
   };
 
-  // Auto-play (optional)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (currentIndex < maxIndex) {
-        setCurrentIndex(prev => prev + 1);
-      } else {
-        setCurrentIndex(0);
-      }
-    }, 5000); // Change slide every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [currentIndex, maxIndex]);
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? '100%' : '-100%',
+      opacity: 0,
+      scale: 0.95,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction < 0 ? '100%' : '-100%',
+      opacity: 0,
+      scale: 0.95,
+    }),
+  };
 
   return (
     <section className="relative w-full max-w-[1440px] mx-auto min-h-[812px] bg-gradient-to-br from-orange-50/30 to-white overflow-hidden px-4 py-12 md:py-16 lg:py-20">
@@ -194,106 +182,81 @@ export default function Testimonials() {
           </motion.p>
         </motion.div>
 
-        {/* Testimonials Carousel - 1 Card on Mobile/Tablet, 3 on Desktop */}
-        <div className="relative mb-8 md:mb-12 overflow-hidden">
-          <div className="overflow-hidden">
-            <motion.div
-              className="flex gap-4 md:gap-6 lg:gap-8"
-              animate={{
-                x: isDragging 
-                  ? currentTranslate 
-                  : `calc(-${currentIndex * 100}% - ${currentIndex * 16}px)`,
-              }}
-              transition={{
-                duration: isDragging ? 0 : 0.6,
-                ease: [0.25, 0.1, 0.25, 1],
-              }}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              onMouseDown={handleTouchStart}
-              onMouseMove={handleTouchMove}
-              onMouseUp={handleTouchEnd}
-              onMouseLeave={handleTouchEnd}
-              style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-            >
-              {testimonials.map((testimonial, idx) => (
+        {/* Testimonials Carousel */}
+        <div className="relative mb-8 md:mb-12">
+          {/* Mobile & Tablet: Single Card with Swipe */}
+          <div className="lg:hidden">
+            <div className="relative h-[420px] md:h-[380px] overflow-hidden px-2">
+              <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
-                  key={testimonial.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  viewport={{ once: true }}
-                  className="w-full lg:w-[calc(33.333%-16px)] min-w-full lg:min-w-[calc(33.333%-16px)] h-auto md:h-[278px] rounded-[10px] bg-white shadow-[1px_0_9.3px_4px_rgba(0,0,0,0.10)] p-5 md:p-6 flex flex-col flex-shrink-0"
+                  key={currentIndex}
+                  custom={direction}
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    x: { type: 'spring', stiffness: 300, damping: 30 },
+                    opacity: { duration: 0.3 },
+                    scale: { duration: 0.3 },
+                  }}
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.3}
+                  dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
+                  onDragEnd={handleDragEnd}
+                  className="absolute inset-x-[-100px] h-full cursor-grab active:cursor-grabbing px-[100px]"
                 >
-                  {/* Stars */}
-                  <div className="flex gap-[7px] mb-4 md:mb-5">
-                    {[...Array(testimonial.stars)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.3, delay: i * 0.1 }}
-                        className="w-[14px] h-[14px] relative"
-                      >
-                        <Image
-                          src="/star.png"
-                          alt="star"
-                          fill
-                          className="object-cover"
-                          sizes="14px"
-                        />
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  {/* Testimonial Text */}
-                  <p className="flex-1 text-black text-justify font-poppins text-[14px] md:text-[15px] font-normal leading-relaxed mb-4 md:mb-5">
-                    {testimonial.text}
-                  </p>
-
-                  {/* Author Info */}
-                  <div className="flex items-center gap-5">
-                    {/* Avatar with border */}
-                    <div className="relative">
-                      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#EA5D28] to-[#F8931F] opacity-20 blur-sm"></div>
-                      <div className="relative w-[80px] h-[55px] md:w-[106px] md:h-[71px] rounded-full overflow-hidden border-2 border-gray-200">
-                        <Image
-                          src={testimonial.image}
-                          alt={testimonial.name}
-                          fill
-                          className="object-cover"
-                          sizes="106px"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Name and Position */}
-                    <div className="flex flex-col gap-1">
-                      <h4 className="font-poppins text-[14px] md:text-[15px] font-bold bg-gradient-to-r from-[#EA5D28] via-[#EA5D28] to-[#F8931F] bg-clip-text text-transparent">
-                        {testimonial.name}
-                      </h4>
-                      <p className="font-poppins text-[12px] md:text-[13px] font-medium bg-gradient-to-r from-[#EA5D28] to-[#F8931F] bg-clip-text text-transparent">
-                        {testimonial.position}
-                      </p>
-                    </div>
-                  </div>
+                  <TestimonialCard testimonial={testimonials[currentIndex]} />
                 </motion.div>
-              ))}
-            </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Swipe Instruction */}
+            <div className="text-center mt-4">
+              <p className="text-gray-500 font-poppins text-sm flex items-center justify-center gap-2">
+                <span>Swipe to navigate</span>
+                <motion.span
+                  animate={{ x: [0, 10, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  →
+                </motion.span>
+              </p>
+            </div>
           </div>
 
-          {/* Swipe Instruction for Mobile */}
-          <div className="lg:hidden text-center mt-4">
-            <p className="text-gray-500 font-poppins text-sm flex items-center justify-center gap-2">
-              <span>Swipe to navigate</span>
-              <motion.span
-                animate={{ x: [0, 10, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
+          {/* Desktop: 3 Cards Layout */}
+          <div className="hidden lg:block">
+            <div className="relative overflow-hidden">
+              <motion.div
+                className="flex gap-8"
+                animate={{
+                  x: `calc(-${currentIndex * 33.333}% - ${currentIndex * 21.33}px)`,
+                }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 300,
+                  damping: 30,
+                }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.15}
+                dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
+                onDragEnd={handleDragEnd}
+                style={{ cursor: 'grab' }}
+                whileTap={{ cursor: 'grabbing' }}
               >
-                →
-              </motion.span>
-            </p>
+                {testimonials.map((testimonial) => (
+                  <div
+                    key={testimonial.id}
+                    className="w-[calc(33.333%-21.33px)] flex-shrink-0"
+                  >
+                    <TestimonialCard testimonial={testimonial} />
+                  </div>
+                ))}
+              </motion.div>
+            </div>
           </div>
         </div>
 
@@ -311,7 +274,7 @@ export default function Testimonials() {
             whileTap={currentIndex > 0 ? { scale: 0.95 } : {}}
             onClick={handlePrev}
             disabled={currentIndex === 0}
-            className={`flex w-[32px] h-[32px] items-center justify-center rounded-full text-white shadow-lg transition-all duration-300 ${
+            className={`flex w-[40px] h-[40px] md:w-[48px] md:h-[48px] items-center justify-center rounded-full text-white shadow-lg transition-all duration-300 ${
               currentIndex === 0
                 ? 'bg-gray-300 cursor-not-allowed opacity-50'
                 : 'bg-gradient-to-b from-[#FB5B24] to-[#F8931F] hover:shadow-xl'
@@ -321,9 +284,9 @@ export default function Testimonials() {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={2}
+              strokeWidth={2.5}
               stroke="currentColor"
-              className="w-4 h-4"
+              className="w-5 h-5 md:w-6 md:h-6"
             >
               <path
                 strokeLinecap="round"
@@ -341,10 +304,10 @@ export default function Testimonials() {
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => handleDotClick(index)}
-                className={`h-[7px] rounded-full transition-all duration-300 ${
+                className={`h-[8px] md:h-[10px] rounded-full transition-all duration-300 ${
                   currentIndex === index
-                    ? 'bg-[#EA5D28] w-[20px]'
-                    : 'bg-[#D9D9D9] w-[7px]'
+                    ? 'bg-gradient-to-r from-[#EA5D28] to-[#F8931F] w-[24px] md:w-[32px]'
+                    : 'bg-[#D9D9D9] w-[8px] md:w-[10px]'
                 }`}
               />
             ))}
@@ -356,7 +319,7 @@ export default function Testimonials() {
             whileTap={currentIndex < maxIndex ? { scale: 0.95 } : {}}
             onClick={handleNext}
             disabled={currentIndex === maxIndex}
-            className={`flex w-[32px] h-[32px] items-center justify-center rounded-full text-white shadow-lg transition-all duration-300 ${
+            className={`flex w-[40px] h-[40px] md:w-[48px] md:h-[48px] items-center justify-center rounded-full text-white shadow-lg transition-all duration-300 ${
               currentIndex === maxIndex
                 ? 'bg-gray-300 cursor-not-allowed opacity-50'
                 : 'bg-gradient-to-b from-[#FB5B24] to-[#F8931F] hover:shadow-xl'
@@ -366,9 +329,9 @@ export default function Testimonials() {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={2}
+              strokeWidth={2.5}
               stroke="currentColor"
-              className="w-4 h-4"
+              className="w-5 h-5 md:w-6 md:h-6"
             >
               <path
                 strokeLinecap="round"
@@ -380,5 +343,74 @@ export default function Testimonials() {
         </motion.div>
       </div>
     </section>
+  );
+}
+
+// Testimonial Card Component
+function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+  return (
+    <motion.div
+      whileHover={{ y: -5, boxShadow: '2px 2px 20px 8px rgba(0,0,0,0.15)' }}
+      transition={{ duration: 0.3 }}
+      className="w-full h-full min-h-[400px] md:min-h-[360px] lg:min-h-[340px] rounded-[12px] md:rounded-[16px] bg-white shadow-[1px_0_9.3px_4px_rgba(0,0,0,0.10)] p-6 md:p-7 lg:p-8 flex flex-col"
+    >
+      {/* Stars */}
+      <div className="flex gap-[7px] mb-4 md:mb-5">
+        {[...Array(testimonial.stars)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, scale: 0, rotate: -180 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ 
+              duration: 0.4, 
+              delay: i * 0.1,
+              type: 'spring',
+              stiffness: 200
+            }}
+            className="w-[16px] h-[16px] md:w-[18px] md:h-[18px] relative flex-shrink-0"
+          >
+            <Image
+              src="/star.png"
+              alt="star"
+              fill
+              className="object-cover"
+              sizes="18px"
+            />
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Testimonial Text */}
+      <p className="flex-1 text-black text-justify font-poppins text-[14px] md:text-[15px] lg:text-[15.5px] font-normal leading-relaxed mb-5 md:mb-6 overflow-auto">
+        {testimonial.text}
+      </p>
+
+      {/* Author Info */}
+      <div className="flex items-center gap-4 md:gap-5 mt-auto">
+        {/* Avatar with gradient border effect */}
+        <div className="relative flex-shrink-0">
+          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#EA5D28] to-[#F8931F] opacity-30 blur-md"></div>
+          <div className="relative w-[70px] h-[70px] md:w-[75px] md:h-[75px] lg:w-[80px] lg:h-[80px] rounded-full overflow-hidden border-3 border-white shadow-lg">
+            <Image
+              src={testimonial.image}
+              alt={testimonial.name}
+              fill
+              className="object-cover"
+              sizes="80px"
+            />
+          </div>
+        </div>
+
+        {/* Name and Position */}
+        <div className="flex flex-col gap-1.5 min-w-0">
+          <h4 className="font-poppins text-[15px] md:text-[16px] lg:text-[16.5px] font-bold bg-gradient-to-r from-[#EA5D28] via-[#EA5D28] to-[#F8931F] bg-clip-text text-transparent">
+            {testimonial.name}
+          </h4>
+          <p className="font-poppins text-[12px] md:text-[13px] lg:text-[13.5px] font-medium text-gray-600 leading-snug">
+            {testimonial.position}
+          </p>
+        </div>
+      </div>
+    </motion.div>
   );
 }

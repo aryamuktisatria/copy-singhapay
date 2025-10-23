@@ -10,7 +10,7 @@ export default function Hero() {
       {/* DESKTOP VERSION (lg:flex) */}
       <div className="hidden lg:flex justify-center items-center relative" style={{ height: "660px" }}>
         
-        {/* Hero Right */}
+        {/* Hero Right dengan gambar fix yang sudah include icons */}
         <motion.div
           className="relative"
           style={{
@@ -26,125 +26,12 @@ export default function Hero() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <Image
-            src="/hero-right.png"
-            alt="Hero Right"
+            src="/hero-right-fix.png"
+            alt="Hero Right with integrated icons"
             fill
             priority
             className="object-cover"
           />
-
-          {/* Ikon 1 */}
-          <motion.div
-            style={{
-              position: "absolute",
-              top: "195px", 
-              right: "180px",
-              zIndex: 10,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "105px",
-              height: "104px",
-              flexShrink: 0,
-            }}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
-          >
-            <Image
-              src="/bg-icon-hero.png"
-              alt="Background Icon 1"
-              fill
-              className="object-cover"
-            />
-            <Image
-              src="/logo-hero-1.jpg"
-              alt="Icon 1"
-              width={94}
-              height={44}
-              priority
-              style={{
-                zIndex: 11,
-                aspectRatio: "47/22",
-                objectFit: "cover",
-              }}
-            />
-          </motion.div>
-
-          {/* Ikon 2 */}
-          <motion.div
-            style={{
-              position: "absolute",
-              top: "357px", 
-              right: "68px",
-              zIndex: 10,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "123px",
-              height: "123px",
-              flexShrink: 0,
-            }}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.7, ease: "easeOut" }}
-          >
-            <Image
-              src="/bg-icon-hero.png"
-              alt="Background Icon 2"
-              fill
-              className="object-cover"
-            />
-            <Image
-              src="/logo-hero-2.png" 
-              alt="Icon 2"
-              width={124}
-              height={124}
-              priority
-              style={{
-                zIndex: 11,
-                objectFit: "contain",
-              }}
-            />
-          </motion.div>
-
-          {/* Ikon 3 */}
-          <motion.div
-            style={{
-              position: "absolute",
-              top: "498px", 
-              right: "260px",
-              zIndex: 10,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "97px",
-              height: "96px",
-              flexShrink: 0,
-            }}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.9, ease: "easeOut" }}
-          >
-            <Image
-              src="/bg-icon-hero.png"
-              alt="Background Icon 3"
-              fill
-              className="object-cover"
-            />
-            <Image
-              src="/logo-hero-3.jpg"
-              alt="Icon 3"
-              width={84}
-              height={45}
-              priority
-              style={{
-                zIndex: 11,
-                aspectRatio: "28/15",
-                objectFit: "cover",
-              }}
-            />
-          </motion.div>
         </motion.div>
 
         {/* Hero Left (Container Gambar dan Teks) */}
@@ -263,11 +150,9 @@ export default function Hero() {
         ></motion.div>
       </div>
 
-      {/* MOBILE & TABLET VERSION (lg:hidden) - IMPROVED */}
-     {/* MOBILE & TABLET VERSION (lg:hidden) - IMPROVED */}
+      {/* MOBILE & TABLET VERSION */}
       <div className="lg:hidden relative flex flex-col bg-gradient-to-b from-white to-gray-50">
-        
-        {/* Content Container with better spacing and centering */}
+
         <div className="relative w-full px-4 md:px-8 pt-10 md:pt-16 pb-4 md:pb-8">
           
           {/* Badge - Centered and pushed up */}
@@ -333,7 +218,7 @@ export default function Hero() {
           </motion.p>
         </div>
 
-        {/* Hero Right Section with Icons - Better layout */}
+        {/* Hero Right Section dengan gambar fix - Clean dan simple */}
         <motion.div 
           className="relative w-full h-[320px] md:h-[420px] mb-0"
           initial={{ opacity: 0, y: 30 }}
@@ -341,115 +226,13 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
         >
           <Image
-            src="/hero-right.png"
-            alt="Hero Right"
+            src="/hero-right-fix.png"
+            alt="Hero Right with integrated icons"
             fill
             priority
             className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
-
-          {/* Icon 1 - Top Right with bounce animation */}
-          <motion.div
-            className="absolute top-[70px] right-[40px] md:top-[95px] md:right-[160px] w-[75px] h-[75px] md:w-[95px] md:h-[95px]"
-            style={{ 
-              zIndex: 10, 
-              display: "flex", 
-              justifyContent: "center", 
-              alignItems: "center", 
-              flexShrink: 0,
-              filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.15))"
-            }}
-            initial={{ opacity: 0, scale: 0, rotate: -180 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ 
-              duration: 0.6, 
-              delay: 0.7, 
-              ease: "easeOut",
-              type: "spring",
-              stiffness: 200
-            }}
-            whileHover={{ scale: 1.1, rotate: 5 }}
-          >
-            <Image src="/bg-icon-hero.png" alt="Background Icon 1" fill className="object-cover" />
-            <Image 
-              src="/logo-hero-1.jpg" 
-              alt="Icon 1" 
-              width={94} 
-              height={44} 
-              priority 
-              style={{ zIndex: 11, aspectRatio: "47/22", objectFit: "cover" }} 
-              className="w-[65px] h-auto md:w-[82px]" 
-            />
-          </motion.div>
-
-          {/* Icon 2 - Middle Right with bounce animation */}
-          <motion.div
-            className="absolute top-[165px] right-[8px] md:top-[240px] md:right-[62px] w-[85px] h-[85px] md:w-[110px] md:h-[110px]"
-            style={{ 
-              zIndex: 10, 
-              display: "flex", 
-              justifyContent: "center", 
-              alignItems: "center", 
-              flexShrink: 0,
-              filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.15))"
-            }}
-            initial={{ opacity: 0, scale: 0, rotate: 180 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ 
-              duration: 0.6, 
-              delay: 0.9, 
-              ease: "easeOut",
-              type: "spring",
-              stiffness: 200
-            }}
-            whileHover={{ scale: 1.1, rotate: -5 }}
-          >
-            <Image src="/bg-icon-hero.png" alt="Background Icon 2" fill className="object-cover" />
-            <div 
-              className="w-[85px] h-[85px] md:w-[110px] md:h-[110px]" 
-              style={{ 
-                zIndex: 11, 
-                backgroundImage: "url(/logo-hero-2.png)", 
-                backgroundSize: "contain", 
-                backgroundPosition: "center", 
-                backgroundRepeat: "no-repeat" 
-              }}
-            />
-          </motion.div>
-
-          {/* Icon 3 - Bottom Center with bounce animation */}
-          <motion.div
-            className="absolute top-[245px] right-[90px] md:top-[360px] md:right-[228px] w-[70px] h-[70px] md:w-[90px] md:h-[90px]"
-            style={{ 
-              zIndex: 10, 
-              display: "flex", 
-              justifyContent: "center", 
-              alignItems: "center", 
-              flexShrink: 0,
-              filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.15))"
-            }}
-            initial={{ opacity: 0, scale: 0, rotate: -180 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ 
-              duration: 0.6, 
-              delay: 1.1, 
-              ease: "easeOut",
-              type: "spring",
-              stiffness: 200
-            }}
-            whileHover={{ scale: 1.1, rotate: 5 }}
-          >
-            <Image src="/bg-icon-hero.png" alt="Background Icon 3" fill className="object-cover" />
-            <Image 
-              src="/logo-hero-3.jpg" 
-              alt="Icon 3" 
-              width={84} 
-              height={45} 
-              priority 
-              style={{ zIndex: 11, aspectRatio: "28/15", objectFit: "cover" }} 
-              className="w-[58px] h-auto md:w-[78px]" 
-            />
-          </motion.div>
         </motion.div>
 
         {/* Bottom Line with gradient */}

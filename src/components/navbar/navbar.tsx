@@ -2,13 +2,18 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
+  const router = useRouter();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [animateNavbar, setAnimateNavbar] = useState(false);
+
+  const isContactPage = pathname === "/contact";
 
   // animasi muncul navbar
   useEffect(() => {
@@ -37,18 +42,47 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // fungsi scroll ke section
+  // fungsi scroll ke section atau navigate ke halaman
   const scrollToSection = (id: string) => {
+    // Jika di halaman contact dan user klik menu lain, redirect ke home dulu
+    if (isContactPage && id !== "contact") {
+      router.push(`/#${id}`);
+      setIsOpen(false);
+      return;
+    }
+
+    // Jika sudah di home, scroll langsung
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
-      setIsOpen(false); 
+      setIsOpen(false);
     }
+  };
+
+  // Handle contact button click
+  const handleContactClick = () => {
+    if (isContactPage) {
+      // Jika sudah di halaman contact, scroll ke atas
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      // Jika di halaman lain, navigate ke /contact
+      router.push("/contact");
+    }
+    setIsOpen(false);
   };
 
   // scroll ke atas
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Handle logo click
+  const handleLogoClick = () => {
+    if (isContactPage) {
+      router.push("/");
+    } else {
+      scrollToTop();
+    }
   };
 
   return (
@@ -64,7 +98,7 @@ export default function Navbar() {
         {/* Logo */}
         <div
           className="flex items-center cursor-pointer"
-          onClick={scrollToTop}
+          onClick={handleLogoClick}
         >
           <Image
             src="/logo-singhapay.png"
@@ -107,7 +141,7 @@ export default function Navbar() {
         {/* Button Contact Us - Desktop */}
         <div className="hidden lg:flex">
           <Button
-            onClick={() => scrollToSection("contact")}
+            onClick={handleContactClick}
             className="w-[176px] h-[60px] px-7 py-3 rounded-[30px]
              bg-gradient-to-br from-[#EF5F22] to-[#F8931F] text-white font-poppins font-semibold text-[15px]
              transition-all duration-300 hover:brightness-110 shadow-lg"
@@ -152,7 +186,7 @@ export default function Navbar() {
             </span>
 
             <Button
-              onClick={() => scrollToSection("contact")}
+              onClick={handleContactClick}
               className="w-[160px] h-[50px] rounded-[30px]
               bg-gradient-to-br from-[#EF5F22] to-[#F8931F] text-white font-poppins font-semibold text-[15px]
               transition-all duration-300 hover:brightness-110 shadow-lg"

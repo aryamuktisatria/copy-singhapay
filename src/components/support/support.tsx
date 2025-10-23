@@ -319,31 +319,34 @@ export default function Support() {
                 >
                     {/* Bangladesh Card */}
                     <motion.div
-                        custom={0}
-                        variants={cardVariants}
-                        whileHover={{ y: -8, boxShadow: '0 8px 30px -4px rgba(0, 0, 0, 0.25)' }}
-                        className="flex flex-col w-full max-w-[270px] mx-auto p-5 md:p-6 lg:px-[12px] lg:pt-[18px] lg:pb-[68px] 
-                            items-start rounded-[14px] bg-white shadow-[0_0_11.3px_-1px_rgba(0,0,0,0.25)] 
-                            transition-all duration-300"
+                    custom={0}
+                    variants={cardVariants}
+                    whileHover={{
+                        y: -8,
+                        boxShadow: '0 8px 30px -4px rgba(0, 0, 0, 0.25)',
+                    }}
+                    className="flex flex-col w-full max-w-[270px] mx-auto 
+                                p-4 md:p-5 lg:px-[12px] lg:pt-[14px] lg:pb-[32px]
+                                items-start rounded-[14px] bg-white 
+                                shadow-[0_0_11.3px_-1px_rgba(0,0,0,0.25)] 
+                                transition-all duration-300"
                     >
-                        <div className="flex items-start gap-3 mb-4">
-                            <div className="w-[52px] h-[52px] flex-shrink-0 rounded-full overflow-hidden relative">
-                                <Image
-                                    src="/bangladesh.png"
-                                    alt="Bangladesh Flag"
-                                    fill
-                                    className="object-cover"
-                                    sizes="52px"
-                                />
-                            </div>
-                            <h3 className="flex-1 text-black font-poppins text-[20px] md:text-[21px] font-semibold leading-normal">
-                                Bangladeshi Taka
-                            </h3>
+                    <div className="flex items-start gap-3 mb-3">
+                        <div className="w-[52px] h-[52px] flex-shrink-0 rounded-full overflow-hidden relative">
+                        <Image
+                            src="/bangladesh.png"
+                            alt="Bangladesh Flag"
+                            fill
+                            className="object-cover"
+                            sizes="52px"
+                        />
                         </div>
-                        <p className="w-full text-[#67687A] font-poppins text-[16px] md:text-[17px] font-normal leading-normal">
-                            BDT (Coming Soon)
-                        </p>
+                        <h3 className="flex-1 text-black font-poppins text-[18px] md:text-[20px] font-semibold leading-normal">
+                        Bangladesh Taka (BDT)
+                        </h3>
+                    </div>
                     </motion.div>
+
 
                     {/* Vietnamese Dong Card */}
                     <motion.div
@@ -365,12 +368,9 @@ export default function Support() {
                                 />
                             </div>
                             <h3 className="flex-1 text-black font-poppins text-[20px] md:text-[21px] font-semibold leading-normal">
-                                Vietnamese Dong
+                                Vietnamese Dong (VDT)
                             </h3>
                         </div>
-                        <p className="w-full text-[#67687A] font-poppins text-[16px] md:text-[17px] font-normal leading-normal">
-                            VND (Coming Soon)
-                        </p>
                     </motion.div>
 
                     {/* Myanmar Kyat Card */}
@@ -393,12 +393,9 @@ export default function Support() {
                                 />
                             </div>
                             <h3 className="flex-1 text-black font-poppins text-[20px] md:text-[21px] font-semibold leading-normal">
-                                Myanmar Kyat
+                                Myanmar Kyat (MMK)
                             </h3>
                         </div>
-                        <p className="w-full text-[#67687A] font-poppins text-[16px] md:text-[17px] font-normal leading-normal">
-                            MMK (Coming Soon)
-                        </p>
                     </motion.div>
 
                     {/* Thailand Baht Card */}
@@ -421,12 +418,9 @@ export default function Support() {
                                 />
                             </div>
                             <h3 className="flex-1 text-black font-poppins text-[20px] md:text-[21px] font-semibold leading-normal">
-                                Thailand Baht
+                                Thailand Baht (BHT)
                             </h3>
                         </div>
-                        <p className="w-full text-[#67687A] font-poppins text-[16px] md:text-[17px] font-normal leading-normal">
-                            THB (Coming Soon)
-                        </p>
                     </motion.div>
                 </motion.div>
 

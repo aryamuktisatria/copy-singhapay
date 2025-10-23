@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 interface FormData {
@@ -27,6 +28,7 @@ interface CardItem {
 }
 
 export default function ContactForm() {
+  const router = useRouter();
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showThankYou, setShowThankYou] = useState<boolean>(false);
@@ -45,8 +47,8 @@ export default function ContactForm() {
     message: ''
   });
 
-  // reCAPTCHA site key (pastikan ini adalah key reCAPTCHA v3)
-  const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; // default test key v2
+  // reCAPTCHA site key
+  const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 
   // Validasi functions
   const validateName = (name: string): string => {
@@ -82,9 +84,6 @@ export default function ContactForm() {
     return '';
   };
 
-  // Hapus handleRecaptchaChange karena reCAPTCHA v3 menggunakan execute()
-  // const handleRecaptchaChange = (token: string | null) => { setRecaptchaToken(token || ''); };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     
@@ -93,7 +92,6 @@ export default function ContactForm() {
       [name]: value
     }));
 
-    // Clear error when user starts typing
     if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({
         ...prev,
@@ -132,10 +130,8 @@ export default function ContactForm() {
     let recaptchaToken = '';
     
     try {
-        // Panggil reCAPTCHA execute() untuk mendapatkan token V3
-        // 'contact_form' adalah action name yang harus Anda daftarkan di konsol reCAPTCHA
         recaptchaToken = await recaptchaRef.current.executeAsync() as string;
-        recaptchaRef.current.reset(); // Reset setelah mendapatkan token
+        recaptchaRef.current.reset();
     } catch (error) {
         console.error('reCAPTCHA execution error:', error);
         alert('Failed to get reCAPTCHA token. Please try again.');
@@ -151,7 +147,7 @@ export default function ContactForm() {
         },
         body: JSON.stringify({
           ...formData,
-          recaptchaToken // Kirim token ke server
+          recaptchaToken
         }),
       });
 
@@ -192,7 +188,10 @@ export default function ContactForm() {
     setShowThankYou(false);
   };
 
- 
+  const handleBackToHome = (): void => {
+    router.push('/');
+  };
+
   const cards: CardItem[] = [
     {
       icon: '/conversation.png',
@@ -260,6 +259,18 @@ export default function ContactForm() {
                   </span>
                 </button>
 
+                <button
+                  onClick={handleBackToHome}
+                  className="w-full py-3 px-6 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-95"
+                  style={{
+                    fontFamily: 'Poppins, sans-serif',
+                    background: 'linear-gradient(130deg, rgba(244, 97, 37, 0.83) -7.18%, rgba(248, 147, 31, 0.83) 77.4%)'
+                  }}
+                >
+                  <span className="text-white text-sm font-semibold">
+                    Back to Homepage
+                  </span>
+                </button>
               </div>
             </div>
           </div>
@@ -278,7 +289,7 @@ export default function ContactForm() {
         </div>
       )}
 
-      {/* Background Wave - Blurred and rotated */}
+      {/* Background Wave */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div 
           className="absolute -left-20 top-20 w-[800px] lg:w-[1233px] h-[250px] lg:h-[384px] opacity-20 blur-2xl rounded-full"
@@ -484,21 +495,19 @@ export default function ContactForm() {
                   )}
                 </div>
 
-                {/* reCAPTCHA - disembunyikan karena reCAPTCHA v3 tidak membutuhkan interaksi visual. */}
-                {/* Namun, elemen badge reCAPTCHA akan muncul di sudut kanan bawah layar */}
+                {/* reCAPTCHA */}
                 <div className="flex justify-center" style={{ display: 'none' }}> 
                   <ReCAPTCHA
                     ref={recaptchaRef}
-                    size="invisible" // Penting untuk reCAPTCHA v3
+                    size="invisible"
                     sitekey={RECAPTCHA_SITE_KEY}
-                    // action="contact_form" // Action akan dipanggil di executeAsync
                   />
                 </div>
 
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  disabled={isLoading} // Hanya disable saat loading
+                  disabled={isLoading}
                   className="rounded-lg py-3 px-10 lg:px-14 text-sm lg:text-base font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{
                     fontFamily: 'Poppins, sans-serif',
@@ -569,24 +578,6 @@ export default function ContactForm() {
           }
         }
 
-        @keyframes bounceIn {
-          0% {
-            opacity: 0;
-            transform: scale(0.3) translateY(20px);
-          }
-          50% {
-            opacity: 1;
-            transform: scale(1.05);
-          }
-          70% {
-            transform: scale(0.95);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
         .animate-fadeIn {
           animation: fadeIn 0.6s ease-out forwards;
         }
@@ -607,30 +598,9 @@ export default function ContactForm() {
           animation: scaleIn 0.3s ease-out forwards;
         }
 
-        .animate-bounceIn {
-          animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-          opacity: 0;
-        }
-
-        /* reCAPTCHA responsive styling */
-        .recaptcha-container {
-          transform: scale(0.9);
-          transform-origin: center;
-        }
-
         @media (max-width: 768px) {
           .animate-slideIn {
             animation: fadeIn 0.6s ease-out forwards;
-          }
-          
-          .recaptcha-container {
-            transform: scale(0.85);
-          }
-        }
-
-        @media (max-width: 480px) {
-          .recaptcha-container {
-            transform: scale(0.75);
           }
         }
       `}</style>
