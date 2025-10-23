@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
       from: `"SinghaPay Contact Form" <${process.env.SMTP_USER}>`,
       to: process.env.SMTP_TO,
       replyTo: email,
-      subject: `New Contact Form Submission from ${name}`,
+      subject: `Contact Form Submission from ${name}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -249,7 +249,7 @@ export async function POST(request: NextRequest) {
                     
                     <div class="section">
                         <div class="section-title">reCAPTCHA Score</div>
-                        <p>Score: <strong>${recaptchaData.score}</strong> (Action: ${recaptchaData.action})</p>
+                        <p>Score: <strong>${recaptchaData.score}</strong></p>
                     </div>
                 </div>
                 
