@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, Variants, Transition } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
@@ -198,17 +199,39 @@ export default function Footer() {
             </motion.div>
           </div>
 
-          {/* BOTTOM SECTION - Copyright */}
-          <motion.div
-            className="mt-10 md:mt-12 lg:mt-14 pt-6 md:pt-8 border-t border-gray-700"
-            variants={itemVariants}
-          >
-            <div className="text-center">
-              <p className="text-gray-400 font-poppins text-xs md:text-sm font-normal">
-                © 2025 SinghaPay. All rights reserved.
-              </p>
+                  {/* BOTTOM SECTION - Copyright & Policy Links */}
+        <motion.div
+          className="mt-10 md:mt-12 lg:mt-14 pt-6 md:pt-8 border-t border-gray-700 w-full"
+          variants={itemVariants}
+        >
+          <div className="flex flex-col items-center relative lg:flex-row lg:justify-end w-full gap-2 lg:gap-0">
+            <p 
+              className="order-2 text-gray-400 font-poppins text-xs md:text-sm font-normal text-center 
+                        lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2"
+            >
+              © 2025 SinghaPay. All rights reserved.
+            </p>
+
+            <div className="order-1 flex items-center justify-center gap-5 sm:gap-7 lg:order-2">
+              <Link
+                href="/privacy"
+                className="text-orange-400 hover:text-orange-300 font-poppins text-xs md:text-sm font-medium transition-colors duration-200"
+              >
+                Privacy Policy
+              </Link>
+
+              <span className="text-gray-600">|</span>
+
+              <Link
+                href="/terms-conditions"
+                className="text-orange-400 hover:text-orange-300 font-poppins text-xs md:text-sm font-medium transition-colors duration-200"
+              >
+                Terms & Conditions
+              </Link>
             </div>
-          </motion.div>
+            
+          </div>
+        </motion.div>
         </motion.div>
       </div>
 

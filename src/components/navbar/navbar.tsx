@@ -85,12 +85,13 @@ export default function Navbar() {
 
   // Handle logo click
   const handleLogoClick = () => {
-    if (isContactPage) {
-      router.push("/");
-    } else {
-      scrollToTop();
-    }
-  };
+  if (pathname !== "/") {
+    router.push("/");
+  } else {
+    scrollToTop();
+  }
+};
+
 
   return (
     <>

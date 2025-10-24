@@ -127,42 +127,44 @@ export default function Support() {
                         <div className="relative w-full max-w-[1200px] mb-8 md:mb-10 lg:mb-12 **-mt-8 md:-mt-10 lg:-mt-12**">
                             
                             {/* Payment Icons Container */}
-                            <div className="relative z-10 flex justify-center items-center min-h-[280px] md:min-h-[350px] lg:min-h-[450px]">
+                            <div className="relative z-10 flex justify-center items-center min-h-[320px] md:min-h-[350px] lg:min-h-[450px]">
                                                 {/* PhonePe - Top Left */}
-                        {/* PhonePe - Top Left */}
-                        <motion.div
-                        variants={floatingVariants}
-                        whileHover={{ scale: 1.1, y: -5 }}
-                        className="absolute 
-                            top-[50px] left-[8%]
-                            md:top-[70px] md:left-[12%]
-                            lg:top-[320px] lg:left-[11%]
-                            w-[65px] h-[65px] md:w-[75px] md:h-[75px] lg:w-[85px] lg:h-[85px] 
-                            rounded-full bg-white shadow-lg flex items-center justify-center 
-                            transition-all duration-300 hover:shadow-xl"
-                        >
-                        <div className="relative w-[45px] h-[45px] md:w-[60px] md:h-[60px] lg:w-[72px] lg:h-[72px]">
-                            <Image
-                            src="/phone-pe.png"
-                            alt="PhonePe"
-                            fill
-                            className="object-contain"
-                            sizes="90px"
-                            />
-                        </div>
-                        </motion.div>
+                            <motion.div
+                            variants={floatingVariants}
+                            whileHover={{ scale: 1.1, y: -5 }}
+                            className="absolute 
+                                top-[50px] left-[8%]
+                                md:top-[70px] md:left-[12%]
+                                lg:top-[320px] lg:left-[11%]
+                                w-[65px] h-[65px] md:w-[75px] md:h-[75px] lg:w-[85px] lg:h-[85px] 
+                                rounded-full bg-white shadow-lg flex items-center justify-center 
+                                transition-all duration-300 hover:shadow-xl
+                                scale-[1.2] lg:scale-100"
+                            >
+                            <div className="relative w-[45px] h-[45px] md:w-[60px] md:h-[60px] lg:w-[72px] lg:h-[72px]">
+                                <Image
+                                src="/phone-pe.png"
+                                alt="PhonePe"
+                                fill
+                                className="object-contain"
+                                sizes="90px"
+                                />
+                            </div>
+                            </motion.div>
+
 
                         {/* WhatsApp Pay - Middle Left */}
                         <motion.div
                         variants={floatingVariants}
                         whileHover={{ scale: 1.1, y: -5 }}
                         className="absolute 
-                            top-[130px] left-[4%]
+                            top-[130px] left-[0%]
                             md:top-[150px] md:left-[6%]
                             lg:top-[270px] lg:left-[21%]
                             w-[65px] h-[65px] md:w-[75px] md:h-[75px] lg:w-[85px] lg:h-[85px] 
                             rounded-full bg-white shadow-lg flex items-center justify-center 
-                            transition-all duration-300 hover:shadow-xl"
+                            transition-all duration-300 hover:shadow-xl
+                            scale-[1.2] lg:scale-100"
                         >
                         <div className="relative w-[48px] h-[25px] md:w-[55px] md:h-[28px] lg:w-[65px] lg:h-[33px]">
                             <Image
@@ -180,14 +182,14 @@ export default function Support() {
                         variants={floatingVariants}
                         whileHover={{ scale: 1.1, y: -5 }}
                         className="absolute 
-                            top-[180px] left-[18%]
+                            top-[205px] left-[10%]
                             md:top-[250px] md:left-[14%]
                             lg:top-[210px] lg:left-[30%] 
                             w-[65px] h-[65px] md:w-[75px] md:h-[75px] lg:w-[85px] lg:h-[85px]
                             rounded-full bg-white shadow-lg flex items-center justify-center 
-                            transition-all duration-300 hover:shadow-xl z-20"
+                            transition-all duration-300 hover:shadow-xl z-20
+                            scale-[1.2] lg:scale-100"
                         >
-                        {/* 💡 Logo diperbesar 1.2x tanpa ubah wadah */}
                         <div className="relative aspect-[1/1] w-[96%] md:w-[100%] lg:w-[100%]">
                             <Image
                             src="/amazon-pay.png"
@@ -234,12 +236,13 @@ export default function Support() {
                             variants={floatingVariants}
                             whileHover={{ scale: 1.1, y: -5 }}
                             className="absolute 
-                                top-[180px] right-[12%]
-                                md:top-[220px] md:right-[16%]
+                                top-[210px] right-[7%]
+                                md:top-[250px] md:right-[10%]
                                 lg:top-[210px] lg:right-[30%]
                                 w-[65px] h-[65px] md:w-[75px] md:h-[75px] lg:w-[85px] lg:h-[85px] 
                                 rounded-full bg-white shadow-lg flex items-center justify-center 
-                                transition-all duration-300 hover:shadow-xl"
+                                transition-all duration-300 hover:shadow-xl
+                                scale-[1.2] lg:scale-100"
                         >
                             <div className="relative w-[44px] h-[15px] md:w-[52px] md:h-[18px] lg:w-[62px] lg:h-[21px]">
                                 <Image
@@ -257,7 +260,7 @@ export default function Support() {
                             variants={floatingVariants}
                             whileHover={{ scale: 1.1, y: -5 }}
                             className="absolute 
-                                top-[115px] right-[3%]
+                                top-[125px] right-[0%]
                                 md:top-[140px] md:right-[5%]
                                 lg:top-[270px] lg:right-[21%]
                                 w-[65px] h-[65px] md:w-[75px] md:h-[75px] lg:w-[85px] lg:h-[85px] 

@@ -146,46 +146,52 @@ export default function Testimonials() {
       </motion.div>
 
       <div className="relative z-10 max-w-[1300px] mx-auto">
-        {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-8 md:mb-12 lg:mb-16"
-        >
-          {/* Badge */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="inline-flex h-[42px] px-7 py-2 justify-center items-center gap-3 rounded-[21px] bg-white shadow-[0_1px_9px_0_rgba(17,17,18,0.12)] mb-6 md:mb-8 lg:mb-10"
-          >
-            <span className="text-center font-poppins text-[16px] md:text-[18px] font-semibold bg-gradient-to-r from-[#E65E2A] to-[#F6931C] bg-clip-text text-transparent">
-              Testimonials
-            </span>
-          </motion.div>
+       {/* Header Section */}
+{/* Header Section */}
+<motion.div
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6 }}
+  viewport={{ once: true }}
+  className="mb-8 md:mb-12 lg:mb-16"
+>
+  {/* Badge (Testimonials) */}
+  <motion.div
+    whileHover={{ scale: 1.05 }}
+    className="inline-flex h-[42px] px-7 py-2 justify-center items-center gap-3 rounded-[21px] bg-white shadow-[0_1px_9px_0_rgba(17,17,18,0.12)] mb-6 md:mb-8 lg:mb-10
+      relative left-[20px] md:left-[30px] lg:left-[30px]"
+  >
+    <span className="text-center font-poppins text-[16px] md:text-[18px] font-semibold bg-gradient-to-r from-[#E65E2A] to-[#F6931C] bg-clip-text text-transparent">
+      Testimonials
+    </span>
+  </motion.div>
 
-          {/* Title */}
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="w-full max-w-[569px] text-black font-poppins text-[28px] md:text-[32px] lg:text-[36px] font-semibold leading-tight mb-4 md:mb-5"
-          >
-            Here&apos;s What Our Customer Have Said
-          </motion.h2>
+  {/* Title */}
+  <motion.h2
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 0.2 }}
+    viewport={{ once: true }}
+    className="w-full max-w-[569px] text-black font-poppins text-[28px] md:text-[32px] lg:text-[36px] font-semibold leading-tight mb-4 md:mb-5
+      relative left-[20px] md:left-[30px] lg:left-[30px]"
+  >
+    Here&apos;s What Our Customer Have Said
+  </motion.h2>
 
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="text-black font-poppins text-[16px] md:text-[18px] font-normal"
-          >
-            Let the results speak for themselves.
-          </motion.p>
-        </motion.div>
+  {/* Subtitle */}
+  <motion.p
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 0.3 }}
+    viewport={{ once: true }}
+    className="text-black font-poppins text-[16px] md:text-[18px] font-normal
+      relative left-[20px] md:left-[30px] lg:left-[30px]"
+  >
+    Let the results speak for themselves.
+  </motion.p>
+</motion.div>
+
+
 
         {/* Testimonials Carousel */}
         <div className="relative mb-8 md:mb-12">
